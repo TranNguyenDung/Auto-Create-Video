@@ -17,7 +17,8 @@ env/
 B2-TTS/models/.cache/
 
 # Content/Reference files
-B1-Content/
+B1-Content/*
+!B1-Content/.gitkeep
 100_chu_de_tham_khao.md
 
 # Generated audio/video outputs
@@ -31,7 +32,8 @@ B1-Content/
 # Generated SRT/JSON outputs
 B3-Create-SRT/export/
 B4-Verify-SRT/export/
-B5-Create-Video/export/
+B5-Create-Video/export/*
+!B5-Create-Video/export/.gitkeep
 
 # Temporary files
 **/tmp_ass/
