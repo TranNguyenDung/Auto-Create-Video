@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-B4 - Xác thực và sửa lỗi SRT (Phiên bản Global Alignment 100%)
-Dùng thuật toán so khớp toàn cục để đảm bảo không mất bất kỳ từ nào từ bản gốc.
+B4 - SRT Verification and Error Correction (Global Alignment 100%)
+Uses global alignment algorithm to ensure no words are lost from the original.
 """
 
 import os
@@ -12,7 +12,7 @@ import argparse
 from difflib import SequenceMatcher
 
 # =================================================================
-# CẤU HÌNH TÙY CHỈNH (CONFIGURATIONS)
+# CUSTOM CONFIGURATIONS
 # =================================================================
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONTENT_DIR = os.path.join(BASE_DIR, "B1-Content")
@@ -25,7 +25,7 @@ def log(msg: str):
     print(f"[B4] {msg}")
 
 def normalize(text: str) -> str:
-    """Chuẩn hóa để so khớp từ."""
+    """Normalize for word matching."""
     t = text.lower().strip()
     t = re.sub(r'[^\w\s]', '', t)
     return t
@@ -39,7 +39,7 @@ def ms_to_srt_time(ms: int) -> str:
 
 def main():
     parser = argparse.ArgumentParser(description="B4 - Global Perfect Alignment")
-    parser.add_argument("--content-name", default="content1", help="Tên file content")
+    parser.add_argument("--content-name", default="content1", help="Content file name")
     args = parser.parse_args()
 
     content_path = os.path.join(CONTENT_DIR, f"{args.content_name}.txt")
@@ -47,9 +47,9 @@ def main():
     output_srt = os.path.join(OUTPUT_DIR, f"{args.content_name}_subtitles_verified.srt")
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    # 1. Đọc dữ liệu
+    # 1. Read data
     if not os.path.exists(content_path) or not os.path.exists(json_path):
-        log("[LỖI] Thiếu file đầu vào B1 hoặc B3.")
+        log("[ERROR] Missing B1 or B3 input files.")
         sys.exit(1)
 
     with open(content_path, "r", encoding="utf-8") as f:
@@ -58,15 +58,15 @@ def main():
     with open(json_path, "r", encoding="utf-8") as f:
         segments = json.load(f)
 
-    print(f"\n{'='*50}\nB4 - KHỚP TOÀN CỤC (GLOBAL ALIGNMENT) [{args.content_name}]\n{'='*50}")
+    print(f"\n{'='*50}\nB4 - GLOBAL ALIGNMENT [{args.content_name}]\n{'='*50}")
 
-    # Tách văn bản gốc thành danh sách các từ
+    # Split original text into word list
     original_words = original_raw.split()
     original_words_norm = [normalize(w) for w in original_words]
     
-    # Gom toàn bộ từ AI nghe được và đánh dấu nó thuộc segment nào
+    # Collect all detected words and mark which segment they belong to
     detected_words_norm = []
-    word_to_segment = [] # Lưu index của segment cho mỗi từ AI nghe được
+    word_to_segment = [] # Store segment index for each detected word
     
     for seg_idx, seg in enumerate(segments):
         words = normalize(seg["text"]).split()
@@ -74,26 +74,26 @@ def main():
             detected_words_norm.append(w)
             word_to_segment.append(seg_idx)
 
-    # 2. Thực hiện So khớp toàn cục (Global Alignment)
-    log("Đang tính toán ma trận so khớp toàn văn bản...")
+    # 2. Perform Global Alignment
+    log("Computing global alignment matrix...")
     matcher = SequenceMatcher(None, detected_words_norm, original_words_norm)
     opcodes = matcher.get_opcodes()
 
-    # Tạo mảng lưu kết quả: mỗi segment sẽ chứa danh sách từ gốc tương ứng
+    # Create result array: each segment will contain corresponding original words
     final_segments_content = [[] for _ in range(len(segments))]
     
-    # Duyệt qua các opcode để phân bổ từ gốc vào các segment
+    # Iterate through opcodes to distribute original words into segments
     # tag: 'replace', 'delete', 'insert', 'equal'
     for tag, i1, i2, j1, j2 in opcodes:
         if tag == 'equal':
-            # Từ nghe được khớp với từ gốc -> đưa vào đúng segment
+            # Detected words match original -> assign to correct segment
             for det_idx, orig_idx in zip(range(i1, i2), range(j1, j2)):
                 seg_idx = word_to_segment[det_idx]
                 final_segments_content[seg_idx].append(original_words[orig_idx])
         
         elif tag == 'replace' or tag == 'insert':
-            # Có từ gốc mới hoặc từ gốc bị AI nghe sai -> phân bổ vào segment gần nhất
-            # Lấy segment index từ từ detected lân cận
+            # New or misrecognized words -> distribute to nearest segment
+            # Get segment index from neighboring detected word
             if i1 < len(word_to_segment):
                 seg_idx = word_to_segment[i1]
             elif i1 > 0:
@@ -104,9 +104,9 @@ def main():
             for orig_idx in range(j1, j2):
                 final_segments_content[seg_idx].append(original_words[orig_idx])
         
-        # 'delete' nghĩa là AI nghe thừa từ -> ta bỏ qua (vì ta bám theo văn bản gốc)
+        # 'delete' means AI heard extra words -> skip (we follow original text)
 
-    # 3. Hợp nhất các từ lại thành câu hoàn chỉnh cho mỗi segment
+    # 3. Merge words into complete sentences for each segment
     verified_segments = []
     fix_count = 0
     
@@ -116,12 +116,12 @@ def main():
             
         corrected_text = " ".join(seg_words)
         
-        # Kiểm tra xem có thay đổi so với bản B3 không
+        # Check if there are changes compared to B3
         old_text = segments[i]["text"]
         if normalize(corrected_text) != normalize(old_text):
             fix_count += 1
             if fix_count <= 5 or i % 10 == 0:
-                print(f"  [{i+1:03d}] Khôi phục: \"{old_text[:20]}...\" -> \"{corrected_text[:40]}...\"")
+                print(f"  [{i+1:03d}] Restored: \"{old_text[:20]}...\" -> \"{corrected_text[:40]}...\"")
         
         verified_segments.append({
             "start_ms": segments[i]["start_ms"],
@@ -129,7 +129,7 @@ def main():
             "text": corrected_text
         })
 
-    # 4. Xuất file SRT
+    # 4. Export SRT file
     srt_lines = []
     for i, seg in enumerate(verified_segments, 1):
         srt_lines.extend([
@@ -143,7 +143,7 @@ def main():
         f.write("\n".join(srt_lines))
 
     print(f"\n{'='*50}")
-    log(f"[HOÀN TẤT] Độ chính xác 100%, không mất bất kỳ chữ nào.")
+    log(f"[COMPLETED] 100% accuracy, no words lost.")
     log(f"  - File: {output_srt}")
     print(f"{'='*50}\n")
     print(f"CONTENT_NAME={args.content_name}")

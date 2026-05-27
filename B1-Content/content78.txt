@@ -1,139 +1,213 @@
-Cách xây dựng chế độ dinh dưỡng cân bằng.
+How to build a balanced nutrition plan.
 
-Bạn có từng nghĩ…
+Have you ever thought…
 
-cơ thể bạn giống như một ngôi nhà?
+your body is like a house?
 
-Mỗi bữa ăn…
-là một viên gạch.
+Every meal…
 
-Gạch tốt…
-ngôi nhà vững chãi.
-Gạch xấu…
-ngôi nhà sụp đổ.
+is a brick.
 
-Xây dựng chế độ dinh dưỡng cân bằng…
-không phải là chuyện phức tạp.
-Không phải là ăn kiêng khổ sở.
-Không phải là chỉ ăn rau luộc.
+Good bricks…
 
-Nó là nghệ thuật của sự cân bằng.
+a sturdy house.
 
-Đầu tiên…
-hãy hiểu rằng màu sắc là bạn.
-Rau xanh…
-cà chua đỏ…
-cà rốt cam…
-củ dền tím…
+Bad bricks…
 
-Mỗi màu sắc…
-mang một loại vitamin riêng.
-Mỗi loại thực phẩm…
-mang một dưỡng chất riêng.
+the house collapses.
 
-Cơ thể bạn cần tất cả.
-Không thiếu một loại nào.
+Building a balanced diet…
 
-Thứ hai…
-đạm là nền tảng.
-Thịt nạc.
-Cá.
-Trứng.
-Đậu.
-Hạt.
+isn't complicated.
 
-Đạm xây dựng cơ bắp.
-Phục hồi tế bào.
-Tạo ra enzyme và hormone.
+It's not about miserable dieting.
 
-Không có đạm…
-cơ thể không thể tự chữa lành.
+It's not about eating only boiled vegetables.
 
-Thứ ba…
-tinh bột tốt là bạn.
-Gạo lứt.
-Yến mạch.
-Khoai lang.
-Bánh mì nguyên cám.
+It's the art of balance.
 
-Tinh bột cung cấp năng lượng.
-Cho não bộ.
-Cho cơ bắp.
-Cho mọi hoạt động.
+First…
 
-Đừng sợ tinh bột.
-Chỉ cần chọn tinh bột tốt.
+understand that color is your friend.
 
-Thứ tư…
-chất béo cũng cần thiết.
-Dầu ô liu.
-Quả bơ.
-Các loại hạt.
-Cá béo.
+Green vegetables…
 
-Chất béo tốt…
-nuôi dưỡng não bộ.
-Bảo vệ tim mạch.
-Giúp hấp thu vitamin.
+red tomatoes…
 
-Người ta thường sợ chất béo.
-Nhưng thiếu chất béo…
-còn nguy hiểm hơn.
+orange carrots…
 
-Thứ năm…
-nước là quan trọng nhất.
-Hai lít nước mỗi ngày.
-Không thể thiếu.
+purple beets…
 
-Nước vận chuyển dưỡng chất.
-Đào thải độc tố.
-Giữ cho mọi cơ quan hoạt động trơn tru.
+Each color…
 
-Nguyên tắc đơn giản…
-một phần đạm.
-Một phần tinh bột.
-Hai phần rau củ.
-Và một ít chất béo tốt.
+carries its own vitamins.
 
-Nhưng dinh dưỡng không chỉ là thức ăn.
+Each type of food…
 
-Cách bạn ăn…
-cũng quan trọng không kém.
+carries its own nutrients.
 
-Ăn chậm.
-Nhai kỹ.
-Cảm nhận từng hương vị.
-Không xem điện thoại khi ăn.
+Your body needs them all.
 
-Khi bạn ăn trong tỉnh thức…
-cơ thể hấp thu tốt hơn.
-Bạn no với ít thức ăn hơn.
-Bạn cảm nhận được niềm vui từ bữa ăn.
+Not a single one missing.
 
-Đừng ăn vì đói.
-Hãy ăn vì yêu thương cơ thể.
+Second…
 
-Và quan trọng nhất…
-không có thực phẩm nào hoàn hảo.
-Không có bữa ăn nào hoàn hảo.
+protein is the foundation.
 
-Chỉ có sự kiên trì và cân bằng.
-Một ngày ăn uống không tốt…
-không hủy hoại sức khỏe.
+Lean meat.
 
-Giống như một ngày tập luyện…
-không tạo nên cơ bắp vĩ đại.
+Fish.
 
-Điều quan trọng…
-là những gì bạn làm thường xuyên.
+Eggs.
 
-Hãy yêu thương cơ thể mình.
-Qua từng bữa ăn.
-Qua từng ngụm nước.
-Qua từng lựa chọn nhỏ.
+Beans.
 
-Bởi dinh dưỡng cân bằng…
-không phải là đích đến.
-Mà là một hành trình.
-Một hành trình yêu thương.
-Dành cho chính bạn.
+Nuts.
+
+Protein builds muscle.
+
+Repairs cells.
+
+Creates enzymes and hormones.
+
+Without protein…
+
+the body cannot heal itself.
+
+Third…
+
+good carbs are your friend.
+
+Brown rice.
+
+Oats.
+
+Sweet potatoes.
+
+Whole wheat bread.
+
+Carbs provide energy.
+
+For the brain.
+
+For muscles.
+
+For every activity.
+
+Don't fear carbs.
+
+Just choose good carbs.
+
+Fourth…
+
+fat is also essential.
+
+Olive oil.
+
+Avocados.
+
+Nuts.
+
+Fatty fish.
+
+Good fats…
+
+nourish the brain.
+
+Protect the heart.
+
+Help absorb vitamins.
+
+People often fear fat.
+
+But a lack of fat…
+
+is even more dangerous.
+
+Fifth…
+
+water is the most important.
+
+Two liters of water each day.
+
+Non-negotiable.
+
+Water transports nutrients.
+
+Flushes out toxins.
+
+Keeps every organ running smoothly.
+
+A simple rule…
+
+one part protein.
+
+One part carbs.
+
+Two parts vegetables.
+
+And a little good fat.
+
+But nutrition isn't just about food.
+
+How you eat…
+
+is equally important.
+
+Eat slowly.
+
+Chew thoroughly.
+
+Savor every flavor.
+
+Don't look at your phone while eating.
+
+When you eat mindfully…
+
+your body absorbs better.
+
+You feel full with less food.
+
+You experience the joy of a meal.
+
+Don't eat because you're hungry.
+
+Eat because you love your body.
+
+And most importantly…
+
+no food is perfect.
+
+No meal is perfect.
+
+Only consistency and balance.
+
+One day of poor eating…
+
+doesn't destroy your health.
+
+Just like one day of training…
+
+doesn't build great muscle.
+
+What matters…
+
+is what you do consistently.
+
+Love your body.
+
+Through every meal.
+
+Through every sip of water.
+
+Through every small choice.
+
+Because balanced nutrition…
+
+isn't a destination.
+
+It's a journey.
+
+A journey of love.
+
+For yourself.

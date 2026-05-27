@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
 Auto Create Video Pipeline
-Chạy toàn bộ quy trình từ B2 đến B5:
+Run the entire pipeline from B2 to B5:
 
-B1: Nội dung (đã có sẵn trong B1-Content/*.txt)
+B1: Content (already available in B1-Content/*.txt)
 B2: Text -> Audio (TTS)
 B3: Audio -> SRT (Speech Recognition)
-B4: Xác thực SRT (sửa lỗi chính tả)
+B4: SRT Verification (fix spelling errors)
 B5: Audio + SRT + Video -> Video 16:9 & 9:16
 
-Tất cả output đều có prefix tên content để không bị ghi đè.
+All outputs have content name prefix to avoid overwriting.
 
 Usage:
     python run_pipeline.py
@@ -52,27 +52,27 @@ def normalize_step(step: str) -> str:
 
 
 def run_step(step: str, content_name: str) -> bool:
-    """Chạy 1 bước trong pipeline với content_name."""
+    """Run one step in the pipeline with content_name."""
     step = normalize_step(step)
     if step not in SCRIPTS:
-        print(f"[LỖI] Không biết bước '{step}'")
+        print(f"[ERROR] Unknown step '{step}'")
         return False
 
     script_path = os.path.join(PROJECT_DIR, SCRIPTS[step])
     if not os.path.exists(script_path):
-        print(f"[LỖI] Không tìm thấy script: {script_path}")
+        print(f"[ERROR] Script not found: {script_path}")
         return False
 
-    print_header(f"Bước {step}: {SCRIPTS[step]} [{content_name}]")
+    print_header(f"Step {step}: {SCRIPTS[step]} [{content_name}]")
 
     cmd = [sys.executable, "-X", "utf8", script_path, "--content-name", content_name]
     result = subprocess.run(cmd, cwd=PROJECT_DIR, capture_output=False)
 
     if result.returncode != 0:
-        print(f"\n[LỖI] Bước {step} thất bại với mã lỗi {result.returncode}")
+        print(f"\n[ERROR] Step {step} failed with error code {result.returncode}")
         return False
 
-    print(f"\n[OK] Bước {step} hoàn tất!")
+    print(f"\n[OK] Step {step} completed!")
     return True
 
 
@@ -84,7 +84,7 @@ def check_file_exists(path: str, desc: str) -> bool:
 
 
 def list_content_files():
-    """Liệt kê các file content có sẵn."""
+    """List available content files."""
     content_dir = os.path.join(PROJECT_DIR, "B1-Content")
     if not os.path.exists(content_dir):
         return []
@@ -92,13 +92,13 @@ def list_content_files():
 
 
 def show_status(content_name="content1"):
-    """Kiểm tra trạng thái các file đầu vào/đầu ra."""
-    print_header("KIỂM TRA TRẠNG THÁI")
+    """Check status of input/output files."""
+    print_header("STATUS CHECK")
 
     files = [
-        (os.path.join(PROJECT_DIR, "B1-Content", f"{content_name}.txt"), "Content gốc (B1)"),
+        (os.path.join(PROJECT_DIR, "B1-Content", f"{content_name}.txt"), "Original Content (B1)"),
         (os.path.join(PROJECT_DIR, "B2-TTS", "export", f"{content_name}_output_audio.wav"), "Audio WAV (B2)"),
-        (os.path.join(PROJECT_DIR, "B3-Create-SRT", "export", f"{content_name}_subtitles.srt"), "SRT thô (B3)"),
+        (os.path.join(PROJECT_DIR, "B3-Create-SRT", "export", f"{content_name}_subtitles.srt"), "Raw SRT (B3)"),
         (os.path.join(PROJECT_DIR, "B4-Verify-SRT", "export", f"{content_name}_subtitles_verified.srt"), "SRT verified (B4)"),
         (os.path.join(PROJECT_DIR, "B5-Create-Video", "export", content_name, f"{content_name}_ass_16_9.mp4"), "Video 16:9 (B5)"),
         (os.path.join(PROJECT_DIR, "B5-Create-Video", "export", content_name, f"{content_name}_ass_9_16.mp4"), "Video 9:16 (B5)"),
@@ -107,14 +107,14 @@ def show_status(content_name="content1"):
     results = [check_file_exists(p, d) for p, d in files]
     has_content = results[0] if results else False
 
-    # Kiểm tra thư viện video
+    # Check video library
     video_lib = os.path.join(PROJECT_DIR, "B5-Create-Video", "Library")
     if os.path.exists(video_lib):
         video_count = len([f for f in os.listdir(video_lib)
                           if f.lower().endswith(('.mp4', '.mov', '.avi', '.mkv', '.webm'))])
-        print(f"  ✓ Thư viện video (B5): {video_count} files")
+        print(f"  ✓ Video library (B5): {video_count} files")
     else:
-        print(f"  ✗ Thư viện video (B5): Không tìm thấy")
+        print(f"  ✗ Video library (B5): Not found")
 
     print()
     return has_content
@@ -122,55 +122,55 @@ def show_status(content_name="content1"):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Auto Create Video Pipeline - Tự động tạo video từ nội dung"
+        description="Auto Create Video Pipeline - Automatically create videos from content"
     )
     parser.add_argument(
         "--step", "-s",
         choices=STEP_CHOICES + ["ALL"],
         default="ALL",
-        help="Chạy 1 bước cụ thể hoặc ALL (mặc định: ALL)"
+        help="Run a specific step or ALL (default: ALL)"
     )
     parser.add_argument(
         "--content-name", default="content1",
-        help="Tên content (VD: content1). Mặc định: content1"
+        help="Content name (e.g. content1). Default: content1"
     )
     parser.add_argument(
         "--content-names",
         default=None,
-        help="Danh sách content, phân tách bằng dấu phẩy. VD: content1,content2"
+        help="Comma-separated list of content names. E.g.: content1,content2"
     )
     parser.add_argument(
         "--all-contents",
         action="store_true",
-        help="Chạy lần lượt tất cả file .txt trong B1-Content (không chạy đồng thời)"
+        help="Run all .txt files in B1-Content sequentially (not concurrently)"
     )
     parser.add_argument(
         "--list-content",
         action="store_true",
-        help="Liệt kê các file content có sẵn"
+        help="List available content files"
     )
     parser.add_argument(
         "--status",
         action="store_true",
-        help="Kiểm tra trạng thái các file"
+        help="Check file status"
     )
     parser.add_argument(
         "--start-from",
         choices=STEP_CHOICES,
         default=None,
-        help="Chạy từ bước này đến hết"
+        help="Run from this step to the end"
     )
     parser.add_argument(
         "--from-step",
         choices=STEP_CHOICES,
         default=None,
-        help="Chạy từ bước này"
+        help="Run from this step"
     )
     parser.add_argument(
         "--to-step",
         choices=STEP_CHOICES,
         default=None,
-        help="Chạy đến bước này"
+        help="Run up to this step"
     )
 
     args = parser.parse_args()
@@ -178,42 +178,42 @@ def main():
     if len(sys.argv) == 1:
         args.all_contents = True
 
-    # Liệt kê content files
+    # List content files
     if args.list_content:
-        print_header("CÁC FILE CONTENT CÓ SẴN")
+        print_header("AVAILABLE CONTENT FILES")
         for f in list_content_files():
             name = os.path.splitext(f)[0]
-            print(f"  - {f}  ->  dùng --content-name {name}")
+            print(f"  - {f}  ->  use --content-name {name}")
         return
 
     if args.all_contents:
         content_names = [os.path.splitext(f)[0] for f in list_content_files()]
         if not content_names:
-            print("[LỖI] Không có file .txt trong thư mục B1-Content.")
+            print("[ERROR] No .txt files in B1-Content directory.")
             sys.exit(1)
     elif args.content_names:
         content_names = [c.strip() for c in args.content_names.split(",") if c.strip()]
         if not content_names:
-            print("[LỖI] --content-names rỗng.")
+            print("[ERROR] --content-names is empty.")
             sys.exit(1)
     else:
         content_names = [args.content_name]
 
-    # Kiểm tra status
+    # Check status
     if args.status:
         for name in content_names:
             show_status(name)
         return
 
-    # Xác định các bước cần chạy
+    # Determine steps to run
     if args.from_step:
         from_step = normalize_step(args.from_step)
         to_step = normalize_step(args.to_step) if args.to_step else "B5"
         if from_step not in STEPS or to_step not in STEPS:
-            print(f"[LỖI] from/to step không hợp lệ: {args.from_step} -> {args.to_step}")
+            print(f"[ERROR] Invalid from/to step: {args.from_step} -> {args.to_step}")
             sys.exit(1)
         if STEPS.index(from_step) > STEPS.index(to_step):
-            print(f"[LỖI] from-step phải <= to-step: {args.from_step} -> {args.to_step}")
+            print(f"[ERROR] from-step must be <= to-step: {args.from_step} -> {args.to_step}")
             sys.exit(1)
         steps_to_run = STEPS[STEPS.index(from_step):STEPS.index(to_step) + 1]
     elif args.start_from:
@@ -224,16 +224,16 @@ def main():
     else:
         steps_to_run = [normalize_step(args.step)]
 
-    print_header("PIPELINE TẠO VIDEO TỰ ĐỘNG")
-    print(f"  Sẽ chạy lần lượt (không đồng thời): {', '.join(content_names)}")
-    print(f"  Các bước: {', '.join(steps_to_run)}")
+    print_header("AUTO VIDEO CREATION PIPELINE")
+    print(f"  Will run sequentially: {', '.join(content_names)}")
+    print(f"  Steps: {', '.join(steps_to_run)}")
     print()
 
     completed = []
     for content_name in content_names:
         content_file = os.path.join(PROJECT_DIR, "B1-Content", f"{content_name}.txt")
         if not os.path.exists(content_file):
-            print(f"[LỖI] Không tìm thấy file: {content_file}")
+            print(f"[ERROR] File not found: {content_file}")
             sys.exit(1)
 
         print_header(f"CONTENT: {content_name}")
@@ -242,21 +242,21 @@ def main():
         for step in steps_to_run:
             success = run_step(step, content_name)
             if not success:
-                print(f"\n[THẤT BẠI] Pipeline dừng tại bước {step} (content: {content_name})")
+                print(f"\n[FAILED] Pipeline stopped at step {step} (content: {content_name})")
                 sys.exit(1)
 
         output_16_9 = os.path.join(PROJECT_DIR, "B5-Create-Video", "export", content_name, f"{content_name}_ass_16_9.mp4")
         output_9_16 = os.path.join(PROJECT_DIR, "B5-Create-Video", "export", content_name, f"{content_name}_ass_9_16.mp4")
         completed.append((content_name, output_16_9, output_9_16))
 
-    print_header("HOÀN TẤT PIPELINE!")
+    print_header("PIPELINE COMPLETED!")
     for content_name, output_16_9, output_9_16 in completed:
         print(f"  Content: {content_name}")
         if os.path.exists(output_16_9):
             print(f"    ✓ Video 16:9: {output_16_9}")
         if os.path.exists(output_9_16):
             print(f"    ✓ Video 9:16: {output_9_16}")
-    print(f"\nChúc mừng! Pipeline đã chạy xong theo thứ tự.")
+    print(f"\nCongratulations! Pipeline has finished successfully.")
 
 
 if __name__ == "__main__":

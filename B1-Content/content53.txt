@@ -1,112 +1,155 @@
-Kỹ năng giải quyết vấn đề.
+Problem-solving skills.
 
-Cuộc sống là một chuỗi vấn đề.
+Life is a series of problems.
 
-Không ai tránh khỏi.
-Không ai có cuộc sống hoàn hảo.
+No one escapes them.
 
-Sự khác biệt giữa người thành công và người thất bại…
-không phải là họ có gặp vấn đề hay không.
+No one has a perfect life.
 
-Mà là cách họ giải quyết vấn đề đó.
+The difference between successful and unsuccessful people…
 
-Kỹ năng giải quyết vấn đề…
-có lẽ là kỹ năng quan trọng nhất.
+is not whether they face problems.
 
-Bởi vì mọi thứ trong cuộc sống…
-đều là vấn đề cần giải quyết.
+But how they solve those problems.
 
-Vậy làm thế nào để trở thành một người giải quyết vấn đề tốt?
+Problem-solving skills…
 
-Bước đầu tiên…
-là xác định đúng vấn đề.
+are perhaps the most important skill.
 
-Nghe có vẻ đơn giản.
-Nhưng hầu hết mọi người đều sai ở bước này.
+Because everything in life…
 
-Họ giải quyết triệu chứng.
-Không phải nguyên nhân gốc rễ.
+is a problem to be solved.
 
-Ví dụ: doanh số giảm.
-Nhiều người vội vàng tăng chi tiêu quảng cáo.
-Nhưng vấn đề thực sự có thể là sản phẩm không tốt.
+So how do you become a good problem solver?
 
-Hãy dành thời gian để hiểu vấn đề.
-Đặt câu hỏi: tại sao?
-Năm lần. Bảy lần. Mười lần.
+The first step…
 
-Cho đến khi bạn tìm ra nguyên nhân thực sự.
+is to identify the right problem.
 
-Bước thứ hai…
-là thu thập thông tin.
+It sounds simple.
 
-Đừng phán đoán khi chưa có đủ dữ liệu.
-Hãy tìm hiểu.
-Hãy nghiên cứu.
-Hãy hỏi người có kinh nghiệm.
+But most people get this step wrong.
 
-Thông tin càng nhiều…
-quyết định càng chính xác.
+They solve symptoms.
 
-Bước thứ ba…
-là suy nghĩ nhiều giải pháp.
+Not the root cause.
 
-Đừng dừng lại ở giải pháp đầu tiên.
-Nó hiếm khi là giải pháp tốt nhất.
+For example: sales are down.
 
-Hãy nghĩ ra ít nhất ba giải pháp.
-Viết chúng ra.
-So sánh ưu nhược điểm.
+Many people rush to increase advertising spending.
 
-Người giải quyết vấn đề giỏi…
-luôn có nhiều lựa chọn.
+But the real problem might be a bad product.
 
-Bước thứ tư…
-là hành động.
+Take time to understand the problem.
 
-Một giải pháp tốt nhưng không được thực thi…
-chẳng khác gì không có giải pháp.
+Ask: why?
 
-Nhiều người mắc kẹt ở giai đoạn suy nghĩ.
-Họ phân tích quá nhiều.
-Họ chờ đợi sự hoàn hảo.
+Five times. Seven times. Ten times.
 
-Nhưng sự hoàn hảo không tồn tại.
-Chỉ có hành động mới tạo ra kết quả.
+Until you find the real cause.
 
-Hãy chọn giải pháp tốt nhất hiện có.
-Và bắt đầu.
+The second step…
 
-Bước thứ năm…
-là đánh giá và điều chỉnh.
+is to gather information.
 
-Sau khi hành động, hãy nhìn lại.
-Có hiệu quả không?
-Cần điều chỉnh gì không?
+Don't judge without enough data.
 
-Giải quyết vấn đề là một vòng lặp.
-Không phải một đường thẳng.
+Investigate.
 
-Bạn thử.
-Bạn sai.
-Bạn học.
-Bạn thử lại.
+Research.
 
-Không có thất bại.
-Chỉ có phản hồi.
+Ask experienced people.
 
-Và cuối cùng…
-hãy giữ bình tĩnh.
+The more information…
 
-Khi đối mặt với vấn đề…
-cảm xúc dễ lấn át lý trí.
-Nhưng sợ hãi không giải quyết được gì.
-Chỉ có suy nghĩ rõ ràng mới làm được.
+the more accurate the decision.
 
-Hít một hơi thật sâu.
-Nhìn vấn đề từ nhiều góc độ.
-Và tin rằng luôn có giải pháp.
+The third step…
 
-Vì mọi vấn đề…
-đều có giải pháp.
-Chỉ là bạn chưa tìm ra mà thôi.
+is to think of multiple solutions.
+
+Don't stop at the first solution.
+
+It is rarely the best one.
+
+Think of at least three solutions.
+
+Write them down.
+
+Compare pros and cons.
+
+Good problem solvers…
+
+always have multiple options.
+
+The fourth step…
+
+is to take action.
+
+A good solution that is not executed…
+
+is the same as no solution.
+
+Many people get stuck in the thinking stage.
+
+They analyze too much.
+
+They wait for perfection.
+
+But perfection doesn't exist.
+
+Only action creates results.
+
+Choose the best available solution.
+
+And begin.
+
+The fifth step…
+
+is to evaluate and adjust.
+
+After acting, look back.
+
+Is it working?
+
+Does anything need adjustment?
+
+Problem-solving is a loop.
+
+Not a straight line.
+
+You try.
+
+You fail.
+
+You learn.
+
+You try again.
+
+There is no failure.
+
+Only feedback.
+
+And finally…
+
+stay calm.
+
+When facing a problem…
+
+emotions easily overwhelm reason.
+
+But fear solves nothing.
+
+Only clear thinking does.
+
+Take a deep breath.
+
+Look at the problem from many angles.
+
+And believe there is always a solution.
+
+Because every problem…
+
+has a solution.
+
+You just haven't found it yet.

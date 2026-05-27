@@ -1,117 +1,163 @@
-Nghệ thuật đàm phán và thương lượng.
+The art of negotiation.
 
-Cuộc sống là một cuộc đàm phán.
+Life is a negotiation.
 
-Bạn nghĩ thế không?
+Don't you think?
 
-Từ việc mua một món đồ…
-đến việc thương lượng lương bổng.
-Từ việc thuyết phục con cái học bài…
-đến việc thỏa thuận hợp đồng.
+From buying an item…
 
-Tất cả đều là đàm phán.
+to negotiating a salary.
 
-Vậy mà nhiều người…
-sợ phải đàm phán.
+From persuading your child to study…
 
-Họ nghĩ đàm phán là tranh giành.
-Là ai cứng rắn hơn thì thắng.
+to agreeing on a contract.
 
-Nhưng sự thật không phải vậy.
+It is all negotiation.
 
-Đàm phán đích thực…
-là tìm ra giải pháp có lợi cho cả hai.
+Yet many people…
 
-Không phải bạn thắng tôi thua.
-Mà là cả hai cùng thắng.
+are afraid to negotiate.
 
-Nguyên tắc đầu tiên…
-là hiểu rõ điều mình muốn.
+They think negotiation is a fight.
 
-Trước khi bước vào bất kỳ cuộc thương lượng nào…
-hãy tự hỏi:
-Điều gì thực sự quan trọng với mình?
-Đâu là giới hạn của mình?
-Đâu là điều mình có thể nhường?
+Whoever is tougher wins.
 
-Khi bạn biết rõ điều mình muốn…
-bạn sẽ tự tin hơn.
-Và không bị lạc hướng.
+But the truth is not that.
 
-Nguyên tắc thứ hai…
-là hiểu người đối diện.
+True negotiation…
 
-Họ muốn gì?
-Họ sợ gì?
-Điều gì thúc đẩy họ?
+is finding a solution that benefits both sides.
 
-Khi bạn hiểu họ…
-bạn có thể tìm ra điểm chung.
-Và đề xuất giải pháp phù hợp.
+Not you win, I lose.
 
-Hãy nhớ rằng…
-cảm xúc có thể che mờ lý trí.
+But both win together.
 
-Trong đàm phán…
-ai giữ được bình tĩnh…
-người đó có lợi thế.
+The first principle…
 
-Đừng để cảm xúc chi phối.
-Hãy tập trung vào lợi ích.
-Không phải vào vị thế.
+is to know clearly what you want.
 
-Vị thế là điều người ta nói họ muốn.
-Lợi ích là điều họ thực sự cần.
+Before entering any negotiation…
 
-Đào sâu hơn vị thế…
-bạn sẽ tìm ra lợi ích thật sự.
+ask yourself:
 
-Và từ đó có thể thương lượng.
+What truly matters to me?
 
-Nguyên tắc thứ ba…
-là lắng nghe nhiều hơn nói.
+What are my limits?
 
-Hầu hết mọi người…
-nói quá nhiều trong đàm phán.
-Họ muốn chứng tỏ mình.
-Họ muốn thuyết phục.
+What can I concede?
 
-Nhưng người thông minh…
-lại lắng nghe.
+When you know what you want…
 
-Vì khi lắng nghe…
-bạn thu thập được thông tin.
-Và thông tin là sức mạnh.
+you will be more confident.
 
-Hãy đặt câu hỏi.
-Hãy tò mò.
-Hãy để người kia nói.
+And won't be led astray.
 
-Bạn sẽ ngạc nhiên về những gì họ tiết lộ.
+The second principle…
 
-Nguyên tắc thứ tư…
-là sẵn sàng bước đi.
+is to understand the other person.
 
-Nếu không có thỏa thuận tốt…
-tốt hơn là không có thỏa thuận.
+What do they want?
 
-Sự sẵn sàng bước đi…
-cho bạn sức mạnh lớn nhất trong đàm phán.
+What do they fear?
 
-Nó cho thấy bạn không tuyệt vọng.
-Bạn có lựa chọn khác.
-Bạn không bị phụ thuộc.
+What drives them?
 
-Và khi bạn có thể bước đi…
-bạn mới thực sự có thể thương lượng.
+When you understand them…
 
-Đàm phán không phải là chiến tranh.
-Nó là một điệu nhảy.
-Nơi cả hai cùng tìm ra nhịp điệu chung.
+you can find common ground.
 
-Hãy nhớ…
-mục tiêu không phải là thắng.
-Mà là đạt được thỏa thuận tốt nhất.
-Cho cả hai bên.
+And propose suitable solutions.
 
-Đó mới là nghệ thuật đàm phán thực sự.
+Remember…
+
+emotions can cloud reason.
+
+In negotiation…
+
+whoever stays calm…
+
+has the advantage.
+
+Don't let emotions take over.
+
+Focus on interests.
+
+Not on positions.
+
+Position is what people say they want.
+
+Interest is what they truly need.
+
+Dig deeper than the position…
+
+and you will find the real interest.
+
+From there you can negotiate.
+
+The third principle…
+
+is to listen more than you talk.
+
+Most people…
+
+talk too much in negotiations.
+
+They want to prove themselves.
+
+They want to persuade.
+
+But smart people…
+
+listen.
+
+Because when you listen…
+
+you gather information.
+
+And information is power.
+
+Ask questions.
+
+Be curious.
+
+Let the other person talk.
+
+You will be surprised by what they reveal.
+
+The fourth principle…
+
+is to be willing to walk away.
+
+If there is no good deal…
+
+it is better to have no deal.
+
+The willingness to walk away…
+
+gives you the greatest power in negotiation.
+
+It shows you are not desperate.
+
+You have other options.
+
+You are not dependent.
+
+And when you can walk away…
+
+you can truly negotiate.
+
+Negotiation is not war.
+
+It is a dance.
+
+Where both find a common rhythm.
+
+Remember…
+
+the goal is not to win.
+
+But to reach the best agreement.
+
+For both sides.
+
+That is the true art of negotiation.

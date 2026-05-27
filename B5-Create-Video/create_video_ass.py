@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-B5 - Tạo Video (Phiên bản ASS Premium - Siêu nhanh + Hiệu ứng đẹp)
-Sử dụng FFmpeg và phụ đề ASS với hiệu ứng Premium (Fade, Glow, Shadow).
+B5 - Video Creation (ASS Premium - Ultra Fast + Beautiful Effects)
+Uses FFmpeg and ASS subtitles with Premium effects (Fade, Glow, Shadow).
 
-Ví dụ chạy:
+Example usage:
 python B5-Create-Video/create_video_ass.py --content-name content1 --output-types 9_16,16_9
 """
 
@@ -29,22 +29,22 @@ if hasattr(sys.stdout, "reconfigure"):
 # =================================================================
 DEFAULT_FPS = 30
 
-# Cấu hình Style ASS (Glow & Premium Look)
+# ASS Style Configuration (Glow & Premium Look)
 # Font: Archivo Black, Size: 80
-# PrimaryColour: &H00FFFFFF (Trắng)
-# OutlineColour: &H00000000 (Đen)
-# BackColour: &H80000000 (Bóng đổ mờ)
-# Spacing: 2 (Khoảng cách chữ)
+# PrimaryColour: &H00FFFFFF (White)
+# OutlineColour: &H00000000 (Black)
+# BackColour: &H80000000 (Shadow)
+# Spacing: 2 (Character spacing)
 # BorderStyle: 1 (Outline + DropShadow)
-# Outline: 3 (Viền dày)
-# Shadow: 5 (Bóng đổ sâu)
+# Outline: 3 (Thick border)
+# Shadow: 5 (Deep shadow)
 # Alignment: 2 (Bottom Center)
 ASS_STYLE = "Style: Default,Archivo Black,80,&H00FFFFFF,&H00FFFFFF,&H00000000,&H80000000,-1,0,0,0,100,100,2,0,1,3,5,2,10,10,60,1"
 
-# Style cho 9:16 (Portrait) - Video ở trên, phụ đề ở dưới
-# Font: Calibri (mềm mại), Size: 65
-# Alignment: 8 (Top Center) - neo phụ đề từ trên xuống, nhiều chữ thì xuống hàng
-# MarginV: 980 = vị trí ngay dưới khung video chính (kết thúc ~y=936)
+# 9:16 (Portrait) Style - Video on top, subtitles at bottom
+# Font: Calibri, Size: 65
+# Alignment: 8 (Top Center) - anchors subtitles from top, wraps if long
+# MarginV: 980 = position just below main video frame (ends ~y=936)
 ASS_STYLE_9_16 = "Style: Default,Calibri,65,&H00FFFFFF,&H00FFFFFF,&H00000000,&H80000000,-1,0,0,0,100,100,2,0,1,3,5,8,10,10,980,1"
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -87,7 +87,7 @@ def ffprobe_duration_seconds(video_path: str):
 
 def pick_random_playlist(video_files, target_duration: float):
     if not video_files:
-        raise RuntimeError("Library rỗng, không có video để chọn.")
+        raise RuntimeError("Library is empty, no videos available.")
     playlist = []
     remaining = max(0.0, float(target_duration))
     tries = 0
@@ -101,7 +101,7 @@ def pick_random_playlist(video_files, target_duration: float):
         playlist.append({"path": p, "duration": seg})
         remaining -= seg
     if remaining > 0:
-        raise RuntimeError("Không đủ video hợp lệ trong Library để ghép đủ thời lượng audio.")
+        raise RuntimeError("Not enough valid videos in Library to match audio duration.")
     return playlist
 
 def build_filter_complex_for_playlist(playlist, ass_path_fixed: str, out_w: int, out_h: int, overlay_y: str = "(H-h)/2"):
@@ -132,13 +132,13 @@ def generate_ass(srt_path, ass_path, play_res_x: int, play_res_y: int, ass_style
     with open(srt_path, "r", encoding="utf-8") as f:
         content = f.read().strip()
     
-    # Chuẩn hóa xuống dòng và tách theo số thứ tự block (số đứng đầu dòng đơn độc)
+    # Normalize line endings and split by block number (standalone number at start of line)
     content = content.replace('\r\n', '\n')
-    # Regex tách theo số thứ tự block: số đứng đầu dòng, sau đó là xuống dòng chứa mốc thời gian
+    # Regex split by block number: number at start of line, followed by line containing timestamp
     blocks = re.split(r'\n(?=\d+\n\d{2}:\d{2}:\d{2})', '\n' + content)
     blocks = [b.strip() for b in blocks if b.strip()]
     
-    log(f"Tìm thấy {len(blocks)} blocks trong file SRT.")
+    log(f"Found {len(blocks)} blocks in SRT file.")
     
     ass_header = f"""[Script Info]
 ScriptType: v4.00+
@@ -159,7 +159,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
         lines = block.strip().split('\n')
         if len(lines) < 2: continue
         
-        # Tìm dòng thời gian trong block
+        # Find time line in block
         time_line = ""
         text_lines = []
         for line in lines:
@@ -187,8 +187,8 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 
 def main():
     parser = argparse.ArgumentParser(description="B5 - ASS Premium Video")
-    parser.add_argument("--content-name", default="content1", help="Tên file content")
-    parser.add_argument("--output-types", default="9_16,16_9", help="Danh sách loại output: 9_16,16_9")
+    parser.add_argument("--content-name", default="content1", help="Content file name")
+    parser.add_argument("--output-types", default="9_16,16_9", help="List of output types: 9_16,16_9")
     args = parser.parse_args()
 
     content_output_dir = os.path.join(OUTPUT_DIR, args.content_name)
@@ -199,7 +199,7 @@ def main():
     srt_file = os.path.join(SRT_DIR, f"{args.content_name}_subtitles_verified.srt")
 
     if not (os.path.exists(audio_file) and os.path.exists(srt_file)):
-        log("[LỖI] Thiếu file đầu vào.")
+        log("[ERROR] Missing input files.")
         sys.exit(1)
 
     video_files = [os.path.join(VIDEO_LIBRARY, f) for f in os.listdir(VIDEO_LIBRARY) if f.lower().endswith(('.mp4', '.mov'))]
@@ -210,36 +210,36 @@ def main():
     try:
         for t in output_types:
             if t not in variants:
-                log(f"Bỏ qua output type không hỗ trợ: {t}")
+                log(f"Skipping unsupported output type: {t}")
                 continue
 
             out_w, out_h = variants[t]
             ass_file = os.path.join(TMP_DIR, f"{args.content_name}_{t}.ass")
             output_video = os.path.join(content_output_dir, f"{args.content_name}_ass_{t}.mp4")
 
-            # Điều chỉnh vị trí video và phụ đề theo tỷ lệ khung hình
+            # Adjust video and subtitle position based on aspect ratio
             if t == "9_16":
-                # 9:16 - Video đẩy lên trên, phụ đề neo dưới khung video
+                # 9:16 - Video pushed to top, subtitles anchored below video frame
                 overlay_y = "(H-h)/4"
-                # Dùng ASS style với Alignment=8 (Top Center), phụ đề luôn bắt đầu cùng độ cao
+                # Use ASS style with Alignment=8 (Top Center), subtitles always start at same height
                 ass_style = ASS_STYLE_9_16
             else:
-                # 16:9 (Landscape) - Giữ nguyên centered
+                # 16:9 (Landscape) - Keep centered
                 overlay_y = "(H-h)/2"
                 ass_style = ASS_STYLE
 
-            log(f"Đang tạo file phụ đề ASS Premium từ {srt_file}...")
+            log(f"Generating ASS Premium subtitle file from {srt_file}...")
             if not generate_ass(srt_file, ass_file, out_w, out_h, ass_style):
-                log("[LỖI] Không thể tạo file ASS.")
+                log("[ERROR] Cannot create ASS file.")
                 sys.exit(1)
 
-            log(f" ✓ File ASS đã tạo tại: {ass_file}")
+            log(f" ✓ ASS file created at: {ass_file}")
 
             ass_path_fixed = ass_file.replace("\\", "/").replace(":", "\\:")
             playlist = pick_random_playlist(video_files, audio_duration)
             filter_complex, vmap = build_filter_complex_for_playlist(playlist, ass_path_fixed, out_w, out_h, overlay_y)
 
-            log(f"Đang render video bằng FFmpeg ({t}, random {len(playlist)} clips từ Library)...")
+            log(f"Rendering video with FFmpeg ({t}, random {len(playlist)} clips from Library)...")
             ffmpeg_cmd = ["ffmpeg", "-y", "-loglevel", "info"]
             for item in playlist:
                 ffmpeg_cmd += ["-i", item["path"]]
@@ -268,12 +268,12 @@ def main():
             start_time = time.time()
             subprocess.run(ffmpeg_cmd, check=True)
             elapsed = time.time() - start_time
-            log(f" ✓ HOÀN TẤT: {output_video}")
-            log(f" ✓ Thời gian render: {elapsed:.2f} giây.")
+            log(f" ✓ COMPLETED: {output_video}")
+            log(f" ✓ Render time: {elapsed:.2f} seconds.")
     finally:
-        log(f"Tổng thời gian: {time.time() - total_start:.2f}s")
+        log(f"Total time: {time.time() - total_start:.2f}s")
 
-    # Tạm thời không xóa TMP_DIR để kiểm tra file ASS
+    # Temporarily keep TMP_DIR for ASS file inspection
     # if os.path.exists(TMP_DIR): shutil.rmtree(TMP_DIR)
 
 if __name__ == "__main__":

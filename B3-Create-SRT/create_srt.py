@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-B3 - Tạo file SRT từ audio (Phiên bản V12 - Kiểm soát thời lượng)
-Đảm bảo phụ đề chuẩn video: dài từ 3-5 giây, không ngắt đôi từ ghép.
+B3 - Generate SRT file from audio (V12 - Duration Control)
+Ensure standard video subtitles: 3-5 seconds long, no word splitting.
 """
 
 import os
@@ -15,20 +15,20 @@ from pydub import AudioSegment
 from pydub.silence import detect_silence
 
 # =================================================================
-# CẤU HÌNH TÙY CHỈNH (CONFIGURATIONS)
+# CUSTOM CONFIGURATIONS
 # =================================================================
 LANGUAGE = "vi-VN"
 SILENCE_THRESH = -45      
-MIN_SILENCE_LEN = 150     # Ngưỡng tối thiểu để coi là khoảng nghỉ (ms)
-BUFFER_MS = 300           # Đệm nhận diện
+MIN_SILENCE_LEN = 150     # Minimum silence threshold (ms)
+BUFFER_MS = 300           # Recognition buffer
 
-# Giới hạn vàng cho phụ đề video
-TARGET_MS = 1000          # Bắt đầu tìm điểm ngắt từ 2.5 giây
-LIMIT_MS = 5000           # Tuyệt đối không vượt quá 5 giây
-MIN_DURATION_MS = 300    # Đủ 1 giây là có thể ngắt nếu có khoảng lặng tốt
+# Golden limits for video subtitles
+TARGET_MS = 1000          # Start looking for break points from 2.5 seconds
+LIMIT_MS = 5000           # Absolutely must not exceed 5 seconds
+MIN_DURATION_MS = 300    # Minimum 1 second to allow splitting if good silence found
 # =================================================================
 
-# Đường dẫn (Paths)
+# Paths
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AUDIO_DIR = os.path.join(BASE_DIR, "B2-TTS", "export")
 B3_DIR = os.path.join(BASE_DIR, "B3-Create-SRT")
@@ -62,22 +62,22 @@ def recognize_audio_segment(segment: AudioSegment, temp_dir: str, idx: int) -> d
 
 def strict_duration_split(silences, total_len):
     """
-    Logic ngắt đoạn theo thời lượng mục tiêu:
-    - Cố gắng ngắt ở khoảng 3.5 giây.
-    - Bắt buộc ngắt nếu đạt 5 giây.
+    Split logic based on target duration:
+    - Try to split at around 3.5 seconds.
+    - Force split at 5 seconds.
     """
     if not silences: return []
     
     boundaries = []
     last_split = 0
     
-    # Danh sách các khoảng nghỉ tiềm năng (phải đủ dài để không cắt từ ghép)
+    # List of potential breaks (must be long enough to avoid splitting words)
     potential_breaks = [(s, e) for s, e in silences if (e - s) >= 180]
     
     current_idx = 0
     while last_split < total_len - 1000:
         found_split = False
-        # Tìm khoảng nghỉ tốt nhất trong cửa sổ từ TARGET đến LIMIT
+        # Find best break in TARGET to LIMIT window
         best_break = None
         max_silence = -1
         
@@ -86,32 +86,32 @@ def strict_duration_split(silences, total_len):
             mid = (s + e) // 2
             dist = mid - last_split
             
-            if dist < MIN_DURATION_MS: # Dưới 1 giây, bỏ qua
+            if dist < MIN_DURATION_MS: # Under 1 second, skip
                 continue
                 
             if MIN_DURATION_MS <= dist <= LIMIT_MS:
                 silence_len = e - s
                 
-                # Ưu tiên khoảng nghỉ dài nhất
+                # Prefer longest silence
                 if silence_len > max_silence:
                     max_silence = silence_len
                     best_break = mid
                     current_idx = i
                 
-                # Nếu đã đạt mốc TARGET (2.5s) và thấy khoảng nghỉ rõ rệt (>250ms) -> Ngắt luôn
+                # If reached TARGET (2.5s) with clear silence (>250ms) -> Split now
                 if dist >= TARGET_MS and silence_len > 250:
                     best_break = mid
                     found_split = True
                     break
             
-            if dist > LIMIT_MS: # Đã vượt quá giới hạn, phải chọn best_break đã thấy
+            if dist > LIMIT_MS: # Exceeded limit, must use best_break found
                 break
         
         if best_break:
             boundaries.append(best_break)
             last_split = best_break
         else:
-            # Nếu không tìm thấy khoảng nghỉ nào lý tưởng, ép ngắt tại LIMIT_MS
+            # If no ideal break found, force split at LIMIT_MS
             last_split += TARGET_MS
             if last_split < total_len:
                 boundaries.append(last_split)
@@ -122,7 +122,7 @@ def strict_duration_split(silences, total_len):
 
 def main():
     parser = argparse.ArgumentParser(description="B3 - Strict Duration SRT")
-    parser.add_argument("--content-name", default="content1", help="Tên file content")
+    parser.add_argument("--content-name", default="content1", help="Content file name")
     args = parser.parse_args()
 
     audio_path = os.path.join(AUDIO_DIR, f"{args.content_name}_output_audio.wav")
@@ -131,20 +131,20 @@ def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     if not os.path.exists(audio_path):
-        log(f"[LỖI] Không tìm thấy audio: {audio_path}")
+        log(f"[ERROR] Audio not found: {audio_path}")
         sys.exit(1)
 
-    print(f"\n{'='*50}\nB3 - TẠO PHỤ ĐỀ CHUẨN (KIỂM SOÁT THỜI LƯỢNG) [{args.content_name}]\n{'='*50}")
+    print(f"\n{'='*50}\nB3 - STANDARD SUBTITLE GENERATION (DURATION CONTROL) [{args.content_name}]\n{'='*50}")
 
     audio = AudioSegment.from_wav(audio_path)
     
-    # Tìm khoảng lặng
+    # Detect silence
     all_silences = detect_silence(audio, min_silence_len=MIN_SILENCE_LEN, silence_thresh=SILENCE_THRESH)
     
-    # Ngắt đoạn dựa trên thời lượng
+    # Split segments based on duration
     boundaries = strict_duration_split(all_silences, len(audio))
     
-    # Chia đoạn (Double Buffer để nhận diện)
+    # Split segments (double buffer for recognition)
     segments_to_recognize = []
     start_ms = 0
     for b in boundaries:
@@ -156,9 +156,9 @@ def main():
         "audio_chunk": audio[max(0, start_ms - BUFFER_MS):]
     })
     
-    log(f"Đã chia thành {len(segments_to_recognize)} đoạn (3-5 giây/đoạn).")
+    log(f"Split into {len(segments_to_recognize)} segments (3-5 seconds each).")
 
-    # Nhận dạng
+    # Recognition
     segments_data = []
     with tempfile.TemporaryDirectory() as temp_dir:
         for i, seg in enumerate(segments_to_recognize, 1):
@@ -169,7 +169,7 @@ def main():
                     "text": res["text"].strip(), "success": True
                 })
 
-    # Xuất file
+    # Export files
     srt_lines = []
     for i, seg in enumerate(segments_data, 1):
         srt_lines.extend([str(i), f"{ms_to_srt_time(seg['start_ms'])} --> {ms_to_srt_time(seg['end_ms'])}", seg["text"], ""])
@@ -177,7 +177,7 @@ def main():
     with open(output_srt, "w", encoding="utf-8") as f: f.write("\n".join(srt_lines))
     with open(output_json, "w", encoding="utf-8") as f: json.dump(segments_data, f, ensure_ascii=False, indent=2)
 
-    log(f"[HOÀN TẤT] SRT đã đạt chuẩn video chuyên nghiệp.")
+    log(f"[COMPLETED] SRT meets professional video standards.")
     print(f"\nCONTENT_NAME={args.content_name}")
 
 if __name__ == "__main__":

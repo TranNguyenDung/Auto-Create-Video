@@ -1,91 +1,131 @@
-Bài học từ những doanh nhân vĩ đại.
+Lessons from great entrepreneurs.
 
-Có một điều mà tất cả doanh nhân vĩ đại đều có chung…
+There is one thing all great entrepreneurs have in common…
 
-Họ không bắt đầu bằng câu hỏi: làm thế nào để giàu có.
-Họ bắt đầu bằng câu hỏi: tôi có thể giải quyết vấn đề gì?
+They didn't start with the question: how to get rich.
 
-Steve Jobs từng nói…
-hãy khao khát, hãy dại khờ.
+They started with the question: what problem can I solve?
 
-Ông không xây dựng Apple để trở thành tỷ phú.
-Ông xây dựng Apple để thay đổi thế giới.
+Steve Jobs once said…
 
-Và đó là bài học đầu tiên.
-Làm việc vì mục đích, không phải vì tiền.
+stay hungry, stay foolish.
 
-Tiền là hệ quả.
-Không phải là đích đến.
+He didn't build Apple to become a billionaire.
 
-Bài học thứ hai là từ Walt Disney.
-Ông từng bị sa thải vì thiếu ý tưởng.
-Trước khi tạo ra đế chế giải trí lớn nhất thế giới.
+He built Apple to change the world.
 
-Ông nói…
-cách tốt nhất để bắt đầu là ngừng nói và bắt đầu làm.
+And that is the first lesson.
 
-Nhiều người nói quá nhiều.
-Họ bàn kế hoạch.
-Họ vẽ viễn cảnh.
-Nhưng họ không làm.
+Work for a purpose, not for money.
 
-Bài học thứ ba là từ Warren Buffett.
-Một trong những người giàu nhất thế giới…
-nhưng sống giản dị hơn bạn tưởng.
+Money is a consequence.
 
-Ông dành 80% thời gian để đọc và suy nghĩ.
+Not the destination.
 
-Ông dạy rằng…
-đầu tư tốt nhất là đầu tư vào bản thân.
-Không có kỹ năng nào là lãng phí.
-Không có kiến thức nào là thừa.
+The second lesson is from Walt Disney.
 
-Bài học thứ tư là từ Oprah Winfrey.
-Sinh ra trong nghèo khó…
-lớn lên trong thiếu thốn…
-nhưng trở thành một trong những người phụ nữ quyền lực nhất.
+He was once fired for lacking ideas.
 
-Bà nói…
-biến vết thương thành sức mạnh.
+Before creating the world's largest entertainment empire.
 
-Những khó khăn không phải là rào cản.
-Chúng là nguyên liệu cho thành công.
+He said…
 
-Bài học thứ năm là từ Elon Musk.
-Một người đàn ông dám nghĩ những điều không tưởng.
-Xe điện. Tên lửa tái sử dụng. Đưa người lên sao Hỏa.
+the best way to get started is to stop talking and begin doing.
 
-Ông nói…
-nếu điều gì đó quan trọng…
-bạn nên làm nó dù tỷ lệ thành công rất thấp.
+Many people talk too much.
 
-Bởi không làm…
-thì tỷ lệ thành công là không phần trăm.
+They discuss plans.
 
-Bài học thứ sáu là từ Jack Ma.
-Người từng bị từ chối 30 lần khi xin việc.
-Không biết gì về công nghệ.
-Nhưng sáng lập Alibaba.
+They paint visions.
 
-Ông nói…
-hôm nay khó khăn.
-Ngày mai còn khó khăn hơn.
-Nhưng ngày kia sẽ là ngày đẹp trời.
+But they don't act.
 
-Hầu hết mọi người bỏ cuộc vào ngày mai.
+The third lesson is from Warren Buffett.
 
-Những doanh nhân vĩ đại…
-không thông minh hơn bạn.
-Không tài năng hơn bạn.
-Không giàu có hơn bạn khi bắt đầu.
+One of the richest people in the world…
 
-Họ chỉ có một điều…
-họ không bao giờ từ bỏ.
+but lives more simply than you'd think.
 
-Họ thất bại nhiều hơn bạn tưởng.
-Họ vấp ngã nhiều hơn bạn nghĩ.
-Nhưng họ luôn đứng dậy.
+He spends 80% of his time reading and thinking.
 
-Và đó mới là bài học lớn nhất.
-Thành công không đến từ việc không bao giờ thất bại.
-Mà đến từ việc không bao giờ bỏ cuộc.
+He teaches that…
+
+the best investment is investing in yourself.
+
+No skill is a waste.
+
+No knowledge is superfluous.
+
+The fourth lesson is from Oprah Winfrey.
+
+Born in poverty…
+
+raised in deprivation…
+
+but became one of the most powerful women.
+
+She said…
+
+turn your wounds into strength.
+
+Difficulties are not barriers.
+
+They are素材 for success.
+
+The fifth lesson is from Elon Musk.
+
+A man who dares to think the unthinkable.
+
+Electric cars. Reusable rockets. Sending people to Mars.
+
+He said…
+
+if something is important…
+
+you should do it even if the odds are against you.
+
+Because if you don't…
+
+the chance of success is zero.
+
+The sixth lesson is from Jack Ma.
+
+Rejected 30 times when applying for jobs.
+
+Knew nothing about technology.
+
+Yet founded Alibaba.
+
+He said…
+
+today is difficult.
+
+Tomorrow will be even more difficult.
+
+But the day after tomorrow will be beautiful.
+
+Most people give up tomorrow.
+
+Great entrepreneurs…
+
+are not smarter than you.
+
+Not more talented than you.
+
+Not richer than you when they started.
+
+They just had one thing…
+
+they never gave up.
+
+They failed more than you think.
+
+They stumbled more than you imagine.
+
+But they always got back up.
+
+And that is the greatest lesson.
+
+Success doesn't come from never failing.
+
+It comes from never giving up.

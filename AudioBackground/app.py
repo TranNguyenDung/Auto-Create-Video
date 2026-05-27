@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AudioBackground - Thêm nhạc nền vào video với âm lượng tuỳ chỉnh
+AudioBackground - Add background music to video with custom volume
 """
 
 import tkinter as tk
@@ -101,21 +101,21 @@ def check_ffmpeg():
 # ─── Color Palette (Catppuccin Latte - Light) ─────────────────────────────────
 
 class Colors:
-    BG = "#eff1f5"        # Nền chính - trắng kem nhẹ
-    BG2 = "#e6e9ef"       # Nền phụ (frame) - xám nhạt
-    BG3 = "#ccd0da"        # Nền input/entry - xám đậm hơn
-    FG = "#4c4f69"         # Chữ chính - xám đậm
-    FG2 = "#6c6f85"        # Chữ phụ - xám vừa
-    ACCENT = "#1e66f5"     # Xanh dương accent
-    ACCENT2 = "#2a7cf6"    # Xanh dương hover
-    SUCCESS = "#40a02b"    # Xanh lá (export)
-    SUCCESS2 = "#34911f"   # Xanh lá hover
-    ERROR = "#d20f39"      # Đỏ
-    WARNING = "#df8e1d"    # Vàng cam
-    BORDER = "#bcc0cc"     # Viền
-    TROUGH = "#ccd0da"     # Màu nền slider trough
+    BG = "#eff1f5"        # Main background - light cream white
+    BG2 = "#e6e9ef"       # Secondary background (frame) - light gray
+    BG3 = "#ccd0da"        # Input/entry background - darker gray
+    FG = "#4c4f69"         # Main text - dark gray
+    FG2 = "#6c6f85"        # Secondary text - medium gray
+    ACCENT = "#1e66f5"     # Blue accent
+    ACCENT2 = "#2a7cf6"    # Blue hover
+    SUCCESS = "#40a02b"    # Green (export)
+    SUCCESS2 = "#34911f"   # Green hover
+    ERROR = "#d20f39"      # Red
+    WARNING = "#df8e1d"    # Orange
+    BORDER = "#bcc0cc"     # Border
+    TROUGH = "#ccd0da"     # Slider trough background
     SLIDER_ACTIVE = "#1e66f5"  # Slider active
-    WHITE = "#ffffff"       # Trắng (chữ trên button màu)
+    WHITE = "#ffffff"       # White (text on colored buttons)
 
 
 # ─── Main Application ───────────────────────────────────────────────────────
@@ -125,7 +125,7 @@ class AudioBackgroundApp:
 
     def __init__(self, root):
         self.root = root
-        self.root.title("AudioBackground - Thêm nhạc nền vào video")
+        self.root.title("AudioBackground - Add background music to video")
         self.root.geometry("780x740")
         self.root.configure(bg=Colors.BG)
         self.root.resizable(False, False)
@@ -134,12 +134,12 @@ class AudioBackgroundApp:
         # ── State Variables ──
         self.video_path = tk.StringVar()
         self.audio_path = tk.StringVar()
-        self.volume = tk.DoubleVar(value=50.0)  # Âm lượng nhạc nền 0-200%
-        self.video_volume = tk.DoubleVar(value=100.0)  # Âm lượng video gốc 0-200%
-        self.loop_audio = tk.BooleanVar(value=False)  # Loop nhạc nền
-        self.video_info_text = tk.StringVar(value="Chưa chọn video")
-        self.audio_info_text = tk.StringVar(value="Chưa chọn audio")
-        self.status_text = tk.StringVar(value="Sẵn sàng")
+        self.volume = tk.DoubleVar(value=50.0)  # Background music volume 0-200%
+        self.video_volume = tk.DoubleVar(value=100.0)  # Original video volume 0-200%
+        self.loop_audio = tk.BooleanVar(value=False)  # Loop background music
+        self.video_info_text = tk.StringVar(value="No video selected")
+        self.audio_info_text = tk.StringVar(value="No audio selected")
+        self.status_text = tk.StringVar(value="Ready")
         self.progress_value = tk.DoubleVar(value=0.0)
         self.preview_file = tk.StringVar(value="")
 
@@ -147,22 +147,22 @@ class AudioBackgroundApp:
         self.ffmpeg_process = None
         self.should_cancel = False
 
-        # Tạo thư mục tạm
+        # Create temp directory
         TEMP_DIR.mkdir(exist_ok=True)
 
-        # Kiểm tra ffmpeg
+        # Check ffmpeg
         if not check_ffmpeg():
             messagebox.showerror(
-                "Thiếu FFmpeg",
-                "Không tìm thấy FFmpeg! Vui lòng cài đặt FFmpeg và thêm vào PATH.\n\n"
-                "Tải tại: https://ffmpeg.org/download.html"
+                "FFmpeg Missing",
+                "FFmpeg not found! Please install FFmpeg and add it to PATH.\n\n"
+                "Download at: https://ffmpeg.org/download.html"
             )
 
         self._build_ui()
         self._apply_styles()
         self._load_config()
 
-        # Xử lý đóng cửa sổ
+        # Handle window close
         self.root.protocol("WM_DELETE_WINDOW", self._on_close)
 
     # ── UI Building ──────────────────────────────────────────────────────────
@@ -225,7 +225,7 @@ class AudioBackgroundApp:
         ).pack(side="left", padx=(8, 0), pady=(8, 0))
 
         tk.Label(
-            header, text="Thêm nhạc nền vào video — âm lượng tuỳ chỉnh, nghe thử trước khi xuất",
+            header, text="Add background music to video — custom volume, preview before export",
             font=("Segoe UI", 10),
             bg=Colors.BG, fg=Colors.FG2,
             anchor="w",
@@ -234,7 +234,7 @@ class AudioBackgroundApp:
         ttk.Separator(main, orient="horizontal").pack(fill="x", pady=(0, 16))
 
         # ═══════════════════ INPUT FILES ═══════════════════
-        files_frame = self._make_card(main, "  📁  File đầu vào  ", pady_bottom=14)
+        files_frame = self._make_card(main, "  📁  Input Files  ", pady_bottom=14)
 
         # -- Video row --
         self._add_file_row(
@@ -249,10 +249,10 @@ class AudioBackgroundApp:
         )
 
         # ═══════════════════ BACKGROUND AUDIO VOLUME ═══════════════════
-        bgm_frame = self._make_card(main, "  🎵  Âm lượng nhạc nền  ", pady_bottom=14)
+        bgm_frame = self._make_card(main, "  🎵  Background Music Volume  ", pady_bottom=14)
         self._add_volume_slider(
             bgm_frame, self.volume, self._on_bgm_volume_change,
-            "Nhẹ (20%)", 20, "Vừa (50%)", 50, "Rõ (100%)", 100, "Mạnh (150%)", 150
+            "Low (20%)", 20, "Medium (50%)", 50, "Clear (100%)", 100, "Strong (150%)", 150
         )
 
         # Loop checkbox
@@ -260,7 +260,7 @@ class AudioBackgroundApp:
         loop_row.pack(fill="x", pady=(6, 0))
 
         self.loop_checkbox = tk.Checkbutton(
-            loop_row, text="🔁  Loop nhạc nền (tự động lặp nếu audio ngắn hơn video)",
+            loop_row, text="🔁  Loop background music (auto-repeat if audio is shorter than video)",
             variable=self.loop_audio,
             font=("Segoe UI", 9),
             bg=Colors.BG2, fg=Colors.FG,
@@ -273,10 +273,10 @@ class AudioBackgroundApp:
         self.loop_checkbox.pack(side="left")
 
         # ═══════════════════ VIDEO ORIGINAL VOLUME ═══════════════════
-        video_vol_frame = self._make_card(main, "  🎬  Âm lượng video gốc  ", pady_bottom=14)
+        video_vol_frame = self._make_card(main, "  🎬  Original Video Volume  ", pady_bottom=14)
         self._add_volume_slider(
             video_vol_frame, self.video_volume, self._on_video_volume_change,
-            "Tắt (0%)", 0, "Nhẹ (50%)", 50, "Giữ nguyên (100%)", 100, "Mạnh (150%)", 150
+            "Mute (0%)", 0, "Low (50%)", 50, "Original (100%)", 100, "Strong (150%)", 150
         )
 
         # ═══════════════════ ACTION BUTTONS ═══════════════════
@@ -285,7 +285,7 @@ class AudioBackgroundApp:
 
         # Preview
         self.btn_preview = tk.Button(
-            actions, text="▶  Nghe thử (15s)",
+            actions, text="▶  Preview (15s)",
             font=("Segoe UI", 11, "bold"),
             bg=Colors.ACCENT, fg=Colors.WHITE,
             relief="flat", bd=0,
@@ -298,7 +298,7 @@ class AudioBackgroundApp:
 
         # Export
         self.btn_export = tk.Button(
-            actions, text="💾  Xuất video",
+            actions, text="💾  Export Video",
             font=("Segoe UI", 11, "bold"),
             bg=Colors.SUCCESS, fg=Colors.WHITE,
             relief="flat", bd=0,
@@ -311,7 +311,7 @@ class AudioBackgroundApp:
 
         # Cancel
         self.btn_cancel = tk.Button(
-            actions, text="✕  Huỷ",
+            actions, text="✕  Cancel",
             font=("Segoe UI", 10),
             bg=Colors.ERROR, fg=Colors.WHITE,
             relief="flat", bd=0,
@@ -401,7 +401,7 @@ class AudioBackgroundApp:
 
         # Browse button
         btn = tk.Button(
-            row, text="Chọn file",
+            row, text="Browse",
             font=("Segoe UI", 9),
             bg=Colors.ACCENT, fg=Colors.WHITE,
             relief="flat", bd=0,
@@ -476,7 +476,7 @@ class AudioBackgroundApp:
 
         tk.Label(
             val_frame,
-            text="âm lượng",
+            text="volume",
             font=("Segoe UI", 8),
             bg=Colors.BG2, fg=Colors.FG2,
         ).pack()
@@ -490,18 +490,18 @@ class AudioBackgroundApp:
         # Indicators
         indicators = tk.Frame(parent, bg=Colors.BG2)
         indicators.pack(fill="x", pady=(4, 0))
-        tk.Label(indicators, text="◀  Im lặng (0%)",
+        tk.Label(indicators, text="◀  Silent (0%)",
                  font=("Segoe UI", 8), bg=Colors.BG2, fg=Colors.FG2).pack(side="left")
-        tk.Label(indicators, text="Bình thường (100%)",
+        tk.Label(indicators, text="Normal (100%)",
                  font=("Segoe UI", 8), bg=Colors.BG2, fg=Colors.FG2).pack(side="left", padx=(0, 16))
-        tk.Label(indicators, text="Tối đa (200%)",
+        tk.Label(indicators, text="Maximum (200%)",
                  font=("Segoe UI", 8), bg=Colors.BG2, fg=Colors.FG2).pack(side="right")
 
         # Presets
         if presets:
             presets_frame = tk.Frame(parent, bg=Colors.BG2)
             presets_frame.pack(fill="x", pady=(8, 0))
-            tk.Label(presets_frame, text="Mẫu nhanh:",
+            tk.Label(presets_frame, text="Presets:",
                      font=("Segoe UI", 8), bg=Colors.BG2, fg=Colors.FG2).pack(side="left", padx=(0, 8))
 
             # Group presets in pairs of (label, value)
@@ -538,7 +538,7 @@ class AudioBackgroundApp:
     def _select_video(self):
         """Open file dialog to select a video file."""
         path = filedialog.askopenfilename(
-            title="Chọn video",
+            title="Select Video",
             filetypes=[
                 ("Video files", "*.mp4 *.avi *.mkv *.mov *.wmv *.flv *.webm"),
                 ("All files", "*.*"),
@@ -551,7 +551,7 @@ class AudioBackgroundApp:
     def _select_audio(self):
         """Open file dialog to select an audio file."""
         path = filedialog.askopenfilename(
-            title="Chọn audio",
+            title="Select Audio",
             filetypes=[
                 ("Audio files", "*.mp3 *.wav *.flac *.aac *.ogg *.m4a *.wma"),
                 ("All files", "*.*"),
@@ -573,7 +573,7 @@ class AudioBackgroundApp:
                     f"📄 {name}  •  ⏱ {format_duration(dur)}  •  📦 {format_size(size)}"
                 )
             else:
-                self.video_info_text.set("Chưa chọn video")
+                self.video_info_text.set("No video selected")
         else:
             path = self.audio_path.get()
             if path and os.path.exists(path):
@@ -584,7 +584,7 @@ class AudioBackgroundApp:
                     f"📄 {name}  •  ⏱ {format_duration(dur)}  •  📦 {format_size(size)}"
                 )
             else:
-                self.audio_info_text.set("Chưa chọn audio")
+                self.audio_info_text.set("No audio selected")
 
     def _validate_inputs(self):
         """Validate that video and audio files are selected and exist."""
@@ -593,15 +593,15 @@ class AudioBackgroundApp:
 
         if not video or not os.path.exists(video):
             messagebox.showwarning(
-                "Thiếu video",
-                "Vui lòng chọn một file video trước!"
+                "Missing Video",
+                "Please select a video file first!"
             )
             return False
 
         if not audio or not os.path.exists(audio):
             messagebox.showwarning(
-                "Thiếu audio",
-                "Vui lòng chọn một file audio trước!"
+                "Missing Audio",
+                "Please select an audio file first!"
             )
             return False
 
@@ -640,9 +640,9 @@ class AudioBackgroundApp:
         self.should_cancel = True
         if self.ffmpeg_process and self.ffmpeg_process.poll() is None:
             self.ffmpeg_process.terminate()
-            self.status_text.set("⏹ Đã huỷ")
+            self.status_text.set("⏹ Cancelled")
             self.status_icon.config(fg=Colors.ERROR)
-        self._set_processing(False, "Đã huỷ thao tác")
+        self._set_processing(False, "Operation cancelled")
 
     # ── FFmpeg Operations ──────────────────────────────────────────────────
 
@@ -651,10 +651,10 @@ class AudioBackgroundApp:
         """Build ffmpeg command to mix background audio with video.
 
         Args:
-            bgm_vol_factor: Âm lượng nhạc nền (0.0 - 2.0)
-            video_vol_factor: Âm lượng video gốc (0.0 - 2.0)
-            loop_audio: Nếu True, loop nhạc nền nếu ngắn hơn video
-            preview: Nếu True, chỉ lấy 15s đầu
+            bgm_vol_factor: Background music volume (0.0 - 2.0)
+            video_vol_factor: Original video volume (0.0 - 2.0)
+            loop_audio: If True, loop background music if shorter than video
+            preview: If True, only take first 15s
         """
         cmd = [FFMPEG_CMD, "-y", "-i", video]
 
@@ -664,7 +664,7 @@ class AudioBackgroundApp:
             cmd += ["-i", audio]
 
         if has_video_audio:
-            # Mix background audio (với âm lượng tuỳ chỉnh) với video gốc (với âm lượng tuỳ chỉnh)
+            # Mix background audio (with custom volume) with original video (with custom volume)
             filter_complex = (
                 f"[0:a]volume={video_vol_factor}[vsrc];"
                 f"[1:a]volume={bgm_vol_factor}[bgm];"
@@ -683,7 +683,7 @@ class AudioBackgroundApp:
                 output,
             ]
         else:
-            # Video không có audio -> chỉ thêm nhạc nền
+            # Video has no audio -> only add background music
             filter_complex = f"[1:a]volume={bgm_vol_factor}[outa]"
             cmd += ["-filter_complex", filter_complex]
             if preview:
@@ -757,12 +757,12 @@ class AudioBackgroundApp:
         vid_dur = get_file_duration(video)
 
         if vid_dur <= 0:
-            messagebox.showerror("Lỗi", "Không thể đọc thông tin video!")
+            messagebox.showerror("Error", "Cannot read video information!")
             return
 
         has_audio = video_has_audio(video)
 
-        # Xoá file preview cũ nếu có
+        # Remove old preview file if it exists
         old_preview = TEMP_DIR / "preview_temp.mp4"
         if old_preview.exists():
             try:
@@ -771,7 +771,7 @@ class AudioBackgroundApp:
                 pass
 
         self.should_cancel = False
-        self._set_processing(True, "🔄 Đang tạo bản nghe thử...", 0)
+        self._set_processing(True, "🔄 Generating preview...", 0)
 
         def worker():
             cancelled = False
@@ -789,25 +789,25 @@ class AudioBackgroundApp:
                 if self.should_cancel:
                     cancelled = True
                     self.root.after(0, lambda: (
-                        self._set_processing(False, "⏹ Đã huỷ nghe thử", 0)))
+                        self._set_processing(False, "⏹ Preview cancelled", 0)))
                     return
 
                 if success and preview_path.exists():
                     self.root.after(0, lambda: self.progress_value.set(100))
                     self.root.after(0, lambda: self.status_text.set(
-                        "🔊 Đang mở bản nghe thử..."))
+                        "🔊 Opening preview..."))
                     os.startfile(str(preview_path))
                     self.root.after(0, lambda: self.status_text.set(
-                        "✅ Bản nghe thử đã được mở"))
+                        "✅ Preview opened"))
                 else:
                     self.root.after(0, lambda: self.status_text.set(
-                        "❌ Lỗi: Không thể tạo bản nghe thử"))
+                        "❌ Error: Cannot create preview"))
 
             except Exception as e:
-                self.root.after(0, lambda: self.status_text.set(f"❌ Lỗi: {str(e)}"))
+                self.root.after(0, lambda: self.status_text.set(f"❌ Error: {str(e)}"))
             finally:
                 if not cancelled:
-                    self.root.after(0, lambda: self._set_processing(False, "Sẵn sàng"))
+                    self.root.after(0, lambda: self._set_processing(False, "Ready"))
 
         threading.Thread(target=worker, daemon=True).start()
 
@@ -829,7 +829,7 @@ class AudioBackgroundApp:
         vid_dur = get_file_duration(video)
 
         if vid_dur <= 0:
-            messagebox.showerror("Lỗi", "Không thể đọc thông tin video!")
+            messagebox.showerror("Error", "Cannot read video information!")
             return
 
         has_video_audio = video_has_audio(video)
@@ -839,7 +839,7 @@ class AudioBackgroundApp:
         default_name = f"{video_name}_with_bgm.mp4"
 
         output_path = filedialog.asksaveasfilename(
-            title="Lưu video thành phẩm",
+            title="Save Final Video",
             defaultextension=".mp4",
             initialfile=default_name,
             filetypes=[("MP4 Video", "*.mp4"), ("All files", "*.*")],
@@ -849,7 +849,7 @@ class AudioBackgroundApp:
             return
 
         self.should_cancel = False
-        self._set_processing(True, "🔄 Đang xuất video...", 0)
+        self._set_processing(True, "🔄 Exporting video...", 0)
 
         def worker():
             cancelled = False
@@ -872,36 +872,36 @@ class AudioBackgroundApp:
                     except Exception:
                         pass
                     self.root.after(0, lambda: self._set_processing(
-                        False, "⏹ Đã huỷ xuất video", 0))
+                        False, "⏹ Export cancelled", 0))
                     return
 
                 if success and os.path.exists(output_path):
                     out_size = format_size(os.path.getsize(output_path))
                     self.root.after(0, lambda s=out_size: self.progress_value.set(100))
                     self.root.after(0, lambda s=out_size: self.status_text.set(
-                        f"✅ Xuất thành công! ({s})"))
+                        f"✅ Export successful! ({s})"))
                     self.root.after(0, self._save_config)
 
                     # Ask to open
                     def ask_open(size=out_size):
                         if messagebox.askyesno(
-                            "Hoàn tất",
-                            f"Video đã được lưu tại:\n{output_path}\n\n"
-                            f"Kích thước: {size}\n\n"
-                            f"Mở video để xem kết quả?"
+                            "Complete",
+                            f"Video saved at:\n{output_path}\n\n"
+                            f"Size: {size}\n\n"
+                            f"Open video to view result?"
                         ):
                             os.startfile(output_path)
 
                     self.root.after(200, ask_open)
                 else:
                     self.root.after(0, lambda: self.status_text.set(
-                        "❌ Lỗi: Không thể xuất video"))
+                        "❌ Error: Cannot export video"))
 
             except Exception as e:
-                self.root.after(0, lambda: self.status_text.set(f"❌ Lỗi: {str(e)}"))
+                self.root.after(0, lambda: self.status_text.set(f"❌ Error: {str(e)}"))
             finally:
                 if not cancelled:
-                    self.root.after(0, lambda: self._set_processing(False, "Sẵn sàng"))
+                    self.root.after(0, lambda: self._set_processing(False, "Ready"))
 
         threading.Thread(target=worker, daemon=True).start()
 
