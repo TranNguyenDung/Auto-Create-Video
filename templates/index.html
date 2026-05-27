@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Manager - Quản lý tạo video tự động</title>
+<link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+<link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<!-- ═══ Top Header ═══ -->
+<header id="top-header">
+  <div class="header-left">
+    <span class="header-title">🎬 Pipeline Manager</span>
+    <span class="header-subtitle">Quản lý & chạy quy trình tạo video tự động</span>
+  </div>
+  <div class="header-right">
+    <button class="btn btn-sm btn-outline" onclick="refreshAll()">🔄 Làm mới</button>
+    <span class="badge" id="header-badge">0 contents</span>
+  </div>
+</header>
+
+<!-- ═══ Main Layout ═══ -->
+<div id="main-layout">
+
+  <!-- ═══ LEFT PANEL ═══ -->
+  <aside id="left-panel">
+    <!-- Search -->
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search-input" placeholder="Tìm content..." oninput="filterContent()">
+    </div>
+
+    <!-- Content list -->
+    <div id="content-list"></div>
+  </aside>
+
+  <!-- ═══ RIGHT PANEL ═══ -->
+  <main id="right-panel">
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="details">📋 Chi tiết & Điều khiển</button>
+      <button class="tab-btn" data-tab="history">📜 Lịch sử chạy</button>
+      <button class="tab-btn" data-tab="log">📟 Log Console</button>
+    </div>
+
+    <!-- ── Tab: Details ── -->
+    <div id="tab-details" class="tab-content active">
+
+      <!-- Info Card -->
+      <div class="card">
+        <div class="card-title">📄 Thông tin content</div>
+        <div id="content-info">
+          <div class="info-row"><span class="info-label">Content:</span><span class="info-value" id="info-name">(chưa chọn)</span></div>
+          <div class="info-row"><span class="info-label">File gốc:</span><span class="info-value" id="info-file">—</span></div>
+          <div class="info-row"><span class="info-label">Sửa lần cuối:</span><span class="info-value" id="info-mtime">—</span></div>
+          <div class="info-row"><span class="info-label">Lần chạy cuối:</span><span class="info-value" id="info-lastrun">(chưa chạy)</span></div>
+          <div class="info-row"><span class="info-label">Thống kê:</span><span class="info-value" id="info-stats">—</span></div>
+        </div>
+      </div>
+
+      <!-- Steps Card -->
+      <div class="card">
+        <div class="card-title">🔄 Trạng thái các bước</div>
+        <div id="steps-container"></div>
+      </div>
+
+      <!-- Upload Card -->
+      <div class="card">
+        <div class="card-title">📤 Trạng thái đăng tải</div>
+        <div class="upload-row">
+          <button class="btn btn-yt" id="btn-yt" onclick="toggleUpload('youtube')">▶ YouTube</button>
+          <button class="btn btn-yt-shorts" id="btn-yt-shorts" onclick="toggleUpload('youtube_shorts')"># Shorts</button>
+          <button class="btn btn-tt" id="btn-tt" onclick="toggleUpload('tiktok')">♪ TikTok</button>
+          <button class="btn btn-fb" id="btn-fb" onclick="toggleUpload('facebook')">📘 Facebook</button>
+          <span id="upload-status" class="upload-label">⏳ Chưa đăng nền tảng nào</span>
+        </div>
+        <div class="note-row">
+          <span class="note-label">📝 Ghi chú:</span>
+          <input type="text" id="note-input" placeholder="Ghi chú..." onchange="saveMetadata()">
+        </div>
+      </div>
+
+      <!-- Schedule Card -->
+      <div class="card">
+        <div class="card-title">📅 Lên lịch chạy theo khung giờ</div>
+        <div class="schedule-row">
+          <label class="schedule-label">Nội dung từ:
+            <select id="schedule-from" class="schedule-select"></select>
+          </label>
+          <label class="schedule-label">đến:
+            <select id="schedule-to" class="schedule-select"></select>
+          </label>
+        </div>
+        <div class="schedule-row" style="margin-top:6px">
+          <label class="schedule-label">
+            <input type="checkbox" id="schedule-time-enable" onchange="toggleTimeWindow()">
+            ⏰ Cài khung giờ chạy
+          </label>
+        </div>
+        <div class="schedule-row" id="schedule-time-row" style="margin-top:6px;display:none">
+          <label class="schedule-label">Từ giờ:
+            <input type="time" id="schedule-time-from" class="schedule-input" value="13:00">
+          </label>
+          <label class="schedule-label">đến giờ:
+            <input type="time" id="schedule-time-to" class="schedule-input" value="15:00">
+          </label>
+        </div>
+        <div class="schedule-row" style="margin-top:6px">
+          <label class="chk-shutdown">
+            <input type="checkbox" id="schedule-shutdown"> 🔌 Tắt máy sau khi chạy xong
+          </label>
+        </div>
+        <div class="actions-row" style="margin-top:8px">
+          <button class="btn btn-primary" id="btn-schedule-start" onclick="startSchedule()">📅 Chạy theo lịch</button>
+          <button class="btn btn-danger" id="btn-schedule-cancel" onclick="cancelSchedule()" style="display:none">⏹ Huỷ lịch</button>
+        </div>
+        <div id="schedule-progress" style="margin-top:8px;display:none">
+          <div class="progress-track"><div class="progress-fill" id="schedule-progress-fill" style="width:0%"></div></div>
+          <div id="schedule-status-text" style="font-size:12px;color:var(--fg2);margin-top:4px"></div>
+          <div id="schedule-extra" style="margin-top:4px"></div>
+        </div>
+      </div>
+
+      <!-- Actions Card -->
+      <div class="card">
+        <div class="card-title">🎯 Thao tác</div>
+        <div class="actions-row">
+          <button class="btn btn-primary" id="btn-run-all" onclick="runPipeline('ALL')">▶ Chạy toàn bộ pipeline</button>
+
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-btn">▶ Chạy từ bước... ▾</button>
+            <div class="dropdown-menu" id="run-from-menu"></div>
+          </div>
+
+          <button class="btn btn-danger" id="btn-cancel" onclick="cancelPipeline()" style="display:none">⏹ Huỷ</button>
+        </div>
+        <div class="actions-row" style="margin-top:8px">
+          <button class="btn btn-outline" onclick="editContent()">✏ Sửa nội dung</button>
+          <button class="btn btn-success-outline" onclick="openAudioBg()">🎵 Mở AudioBackground</button>
+          <button class="btn btn-outline" onclick="openOutput()">📂 Mở thư mục output</button>
+          <button class="btn btn-outline" onclick="openFolder()">📁 Mở file content</button>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div id="progress-section">
+        <div class="status-bar">
+          <span class="status-dot" id="status-dot">●</span>
+          <span id="status-text">Sẵn sàng</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Tab: History ── -->
+    <div id="tab-history" class="tab-content">
+      <div class="tab-header">
+        <span class="tab-header-title">📜 Lịch sử chạy pipeline</span>
+        <div class="tab-header-actions">
+          <button class="btn btn-sm btn-outline" onclick="refreshHistory()">🔄 Làm mới</button>
+          <button class="btn btn-sm btn-danger" onclick="clearHistory()">🗑 Xoá lịch sử</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table id="history-table">
+          <thead>
+            <tr><th>#</th><th>Thời gian</th><th>Content</th><th>Các bước</th><th>Trạng thái</th><th>Thời lượng</th><th>Output</th></tr>
+          </thead>
+          <tbody id="history-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── Tab: Log ── -->
+    <div id="tab-log" class="tab-content">
+      <div class="tab-header">
+        <span class="tab-header-title">📟 Log Console</span>
+        <button class="btn btn-sm btn-danger" onclick="clearLog()">🗑 Xoá log</button>
+      </div>
+      <div id="log-container">
+        <div id="log-content"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="/static/scripts.js"></script>
+</body>
+</html>

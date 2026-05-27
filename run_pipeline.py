@@ -16,6 +16,7 @@ Usage:
 """
 
 import os
+import re
 import sys
 import subprocess
 import argparse
@@ -83,12 +84,16 @@ def check_file_exists(path: str, desc: str) -> bool:
     return exists
 
 
+def natural_sort_key(name):
+    return [int(t) if t.isdigit() else t.lower() for t in re.split(r'(\d+)', name)]
+
 def list_content_files():
     """Liệt kê các file content có sẵn."""
     content_dir = os.path.join(PROJECT_DIR, "B1-Content")
     if not os.path.exists(content_dir):
         return []
-    return sorted([f for f in os.listdir(content_dir) if f.endswith('.txt')])
+    return sorted([f for f in os.listdir(content_dir) if f.endswith('.txt')],
+                  key=natural_sort_key)
 
 
 def show_status(content_name="content1"):
