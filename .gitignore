@@ -16,6 +16,10 @@ env/
 *.safetensors
 B2-TTS/models/.cache/
 
+# Content/Reference files
+B1-Content/
+100_chu_de_tham_khao.md
+
 # Generated audio/video outputs
 *.wav
 *.mp3
