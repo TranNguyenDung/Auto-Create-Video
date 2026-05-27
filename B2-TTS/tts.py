@@ -18,7 +18,6 @@ from omnivoice import OmniVoice
 # =================================================================
 MODEL_NAME = "k2-fsa/OmniVoice"
 SAMPLE_RATE = 24000
-LANGUAGE = "vi"    # Ngôn ngữ mặc định
 
 # Cấu hình thiết bị (Device config)
 DEVICE = "cuda:0" if torch.cuda.is_available() else "cpu"

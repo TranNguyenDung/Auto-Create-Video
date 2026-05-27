@@ -100,8 +100,8 @@ def show_status(content_name="content1"):
         (os.path.join(PROJECT_DIR, "B2-TTS", "export", f"{content_name}_output_audio.wav"), "Audio WAV (B2)"),
         (os.path.join(PROJECT_DIR, "B3-Create-SRT", "export", f"{content_name}_subtitles.srt"), "SRT thô (B3)"),
         (os.path.join(PROJECT_DIR, "B4-Verify-SRT", "export", f"{content_name}_subtitles_verified.srt"), "SRT verified (B4)"),
-        (os.path.join(PROJECT_DIR, "B5-Create-Video", "export", f"{content_name}_ass_16_9.mp4"), "Video 16:9 (B5)"),
-        (os.path.join(PROJECT_DIR, "B5-Create-Video", "export", f"{content_name}_ass_9_16.mp4"), "Video 9:16 (B5)"),
+        (os.path.join(PROJECT_DIR, "B5-Create-Video", "export", content_name, f"{content_name}_ass_16_9.mp4"), "Video 16:9 (B5)"),
+        (os.path.join(PROJECT_DIR, "B5-Create-Video", "export", content_name, f"{content_name}_ass_9_16.mp4"), "Video 9:16 (B5)"),
     ]
 
     results = [check_file_exists(p, d) for p, d in files]
@@ -245,8 +245,8 @@ def main():
                 print(f"\n[THẤT BẠI] Pipeline dừng tại bước {step} (content: {content_name})")
                 sys.exit(1)
 
-        output_16_9 = os.path.join(PROJECT_DIR, "B5-Create-Video", "export", f"{content_name}_ass_16_9.mp4")
-        output_9_16 = os.path.join(PROJECT_DIR, "B5-Create-Video", "export", f"{content_name}_ass_9_16.mp4")
+        output_16_9 = os.path.join(PROJECT_DIR, "B5-Create-Video", "export", content_name, f"{content_name}_ass_16_9.mp4")
+        output_9_16 = os.path.join(PROJECT_DIR, "B5-Create-Video", "export", content_name, f"{content_name}_ass_9_16.mp4")
         completed.append((content_name, output_16_9, output_9_16))
 
     print_header("HOÀN TẤT PIPELINE!")

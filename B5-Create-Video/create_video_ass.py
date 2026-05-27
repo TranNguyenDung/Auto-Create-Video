@@ -41,6 +41,12 @@ DEFAULT_FPS = 30
 # Alignment: 2 (Bottom Center)
 ASS_STYLE = "Style: Default,Archivo Black,80,&H00FFFFFF,&H00FFFFFF,&H00000000,&H80000000,-1,0,0,0,100,100,2,0,1,3,5,2,10,10,60,1"
 
+# Style cho 9:16 (Portrait) - Video ở trên, phụ đề ở dưới
+# Font: Calibri (mềm mại), Size: 65
+# Alignment: 8 (Top Center) - neo phụ đề từ trên xuống, nhiều chữ thì xuống hàng
+# MarginV: 980 = vị trí ngay dưới khung video chính (kết thúc ~y=936)
+ASS_STYLE_9_16 = "Style: Default,Calibri,65,&H00FFFFFF,&H00FFFFFF,&H00000000,&H80000000,-1,0,0,0,100,100,2,0,1,3,5,8,10,10,980,1"
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AUDIO_DIR = os.path.join(BASE_DIR, "B2-TTS", "export")
 SRT_DIR = os.path.join(BASE_DIR, "B4-Verify-SRT", "export")
@@ -98,7 +104,7 @@ def pick_random_playlist(video_files, target_duration: float):
         raise RuntimeError("Không đủ video hợp lệ trong Library để ghép đủ thời lượng audio.")
     return playlist
 
-def build_filter_complex_for_playlist(playlist, ass_path_fixed: str, out_w: int, out_h: int):
+def build_filter_complex_for_playlist(playlist, ass_path_fixed: str, out_w: int, out_h: int, overlay_y: str = "(H-h)/2"):
     parts = []
     vlabels = []
     for i, item in enumerate(playlist):
@@ -107,7 +113,7 @@ def build_filter_complex_for_playlist(playlist, ass_path_fixed: str, out_w: int,
             f"[{i}:v]trim=duration={d:.6f},setpts=PTS-STARTPTS,split=2[v{i}a][v{i}b];"
             f"[v{i}a]scale={out_w}:{out_h}:force_original_aspect_ratio=increase,crop={out_w}:{out_h},boxblur=20:1[bg{i}];"
             f"[v{i}b]scale={out_w}:{out_h}:force_original_aspect_ratio=decrease[fg{i}];"
-            f"[bg{i}][fg{i}]overlay=(W-w)/2:(H-h)/2:shortest=1,fps={DEFAULT_FPS},format=yuv420p,setsar=1[v{i}];"
+            f"[bg{i}][fg{i}]overlay=(W-w)/2:{overlay_y}:shortest=1,fps={DEFAULT_FPS},format=yuv420p,setsar=1[v{i}];"
         )
         vlabels.append(f"[v{i}]")
 
@@ -120,7 +126,7 @@ def srt_time_to_ass(srt_time):
     h, m, s, ms = re.split('[:,]', srt_time)
     return f"{int(h)}:{m}:{s}.{int(ms)//10:02d}"
 
-def generate_ass(srt_path, ass_path, play_res_x: int, play_res_y: int):
+def generate_ass(srt_path, ass_path, play_res_x: int, play_res_y: int, ass_style: str = ASS_STYLE):
     if not os.path.exists(srt_path): return False
     
     with open(srt_path, "r", encoding="utf-8") as f:
@@ -142,7 +148,7 @@ ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-{ASS_STYLE}
+{ass_style}
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -185,7 +191,8 @@ def main():
     parser.add_argument("--output-types", default="9_16,16_9", help="Danh sách loại output: 9_16,16_9")
     args = parser.parse_args()
 
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    content_output_dir = os.path.join(OUTPUT_DIR, args.content_name)
+    os.makedirs(content_output_dir, exist_ok=True)
     os.makedirs(TMP_DIR, exist_ok=True)
 
     audio_file = os.path.join(AUDIO_DIR, f"{args.content_name}_output_audio.wav")
@@ -208,10 +215,21 @@ def main():
 
             out_w, out_h = variants[t]
             ass_file = os.path.join(TMP_DIR, f"{args.content_name}_{t}.ass")
-            output_video = os.path.join(OUTPUT_DIR, f"{args.content_name}_ass_{t}.mp4")
+            output_video = os.path.join(content_output_dir, f"{args.content_name}_ass_{t}.mp4")
+
+            # Điều chỉnh vị trí video và phụ đề theo tỷ lệ khung hình
+            if t == "9_16":
+                # 9:16 - Video đẩy lên trên, phụ đề neo dưới khung video
+                overlay_y = "(H-h)/4"
+                # Dùng ASS style với Alignment=8 (Top Center), phụ đề luôn bắt đầu cùng độ cao
+                ass_style = ASS_STYLE_9_16
+            else:
+                # 16:9 (Landscape) - Giữ nguyên centered
+                overlay_y = "(H-h)/2"
+                ass_style = ASS_STYLE
 
             log(f"Đang tạo file phụ đề ASS Premium từ {srt_file}...")
-            if not generate_ass(srt_file, ass_file, out_w, out_h):
+            if not generate_ass(srt_file, ass_file, out_w, out_h, ass_style):
                 log("[LỖI] Không thể tạo file ASS.")
                 sys.exit(1)
 
@@ -219,7 +237,7 @@ def main():
 
             ass_path_fixed = ass_file.replace("\\", "/").replace(":", "\\:")
             playlist = pick_random_playlist(video_files, audio_duration)
-            filter_complex, vmap = build_filter_complex_for_playlist(playlist, ass_path_fixed, out_w, out_h)
+            filter_complex, vmap = build_filter_complex_for_playlist(playlist, ass_path_fixed, out_w, out_h, overlay_y)
 
             log(f"Đang render video bằng FFmpeg ({t}, random {len(playlist)} clips từ Library)...")
             ffmpeg_cmd = ["ffmpeg", "-y", "-loglevel", "info"]
