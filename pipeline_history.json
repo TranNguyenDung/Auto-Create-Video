@@ -49,6 +49,26 @@
       "status": "success",
       "duration_sec": 0,
       "output_files": []
+    },
+    {
+      "timestamp": "2026-05-27T23:56:13.839013",
+      "content_name": "content1_en",
+      "steps_run": [
+        "B2",
+        "B3",
+        "B4",
+        "B5"
+      ],
+      "status": "success",
+      "duration_sec": 372.8,
+      "output_files": [
+        "D:\\99_CongViec\\Auto Create Video - Vi\\B2-TTS\\export\\content1_en_output_audio.wav",
+        "D:\\99_CongViec\\Auto Create Video - Vi\\B3-Create-SRT\\export\\content1_en_subtitles.srt",
+        "D:\\99_CongViec\\Auto Create Video - Vi\\B4-Verify-SRT\\export\\content1_en_subtitles_verified.srt",
+        "D:\\99_CongViec\\Auto Create Video - Vi\\B5-Create-Video\\export\\content1_en\\content1_en_ass_16_9.mp4",
+        "D:\\99_CongViec\\Auto Create Video - Vi\\B5-Create-Video\\export\\content1_en\\content1_en_ass_16_9.mp4",
+        "D:\\99_CongViec\\Auto Create Video - Vi\\B5-Create-Video\\export\\content1_en\\content1_en_ass_9_16.mp4"
+      ]
     }
   ],
   "contents": {
@@ -119,6 +139,19 @@
       "metadata": {
         "youtube": false,
         "tiktok": false,
+        "note": ""
+      }
+    },
+    "content1_en": {
+      "last_run": "2026-05-27T23:56:13.839056",
+      "run_count": 1,
+      "success_count": 1,
+      "fail_count": 0,
+      "metadata": {
+        "youtube": false,
+        "youtube_shorts": false,
+        "tiktok": false,
+        "facebook": false,
         "note": ""
       }
     }

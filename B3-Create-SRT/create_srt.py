@@ -37,6 +37,11 @@ OUTPUT_DIR = os.path.join(B3_DIR, "export")
 def log(msg: str):
     print(f"[B3] {msg}")
 
+def detect_language(content_name: str) -> str:
+    suffix = content_name.split("_")[-1] if "_" in content_name else ""
+    lang_map = {"en": "en-US", "vi": "vi-VN"}
+    return lang_map.get(suffix, "vi-VN")
+
 def ms_to_srt_time(ms: int) -> str:
     h = ms // 3600000
     m = (ms % 3600000) // 60000
@@ -44,7 +49,7 @@ def ms_to_srt_time(ms: int) -> str:
     ms_rem = ms % 1000
     return f"{h:02d}:{m:02d}:{s:02d},{ms_rem:03d}"
 
-def recognize_audio_segment(segment: AudioSegment, temp_dir: str, idx: int) -> dict:
+def recognize_audio_segment(segment: AudioSegment, temp_dir: str, idx: int, language: str) -> dict:
     temp_path = os.path.join(temp_dir, f"seg_{idx:04d}.wav")
     segment.export(temp_path, format="wav")
     recognizer = sr.Recognizer()
@@ -52,7 +57,7 @@ def recognize_audio_segment(segment: AudioSegment, temp_dir: str, idx: int) -> d
     try:
         with sr.AudioFile(temp_path) as source:
             audio_data = recognizer.record(source)
-            text = recognizer.recognize_google(audio_data, language=LANGUAGE)
+            text = recognizer.recognize_google(audio_data, language=language)
             result.update({"text": text, "success": True})
             print(f"  [{idx:03d}] ✓ {text[:40]}...")
     except: pass
@@ -125,6 +130,10 @@ def main():
     parser.add_argument("--content-name", default="content1", help="Tên file content")
     args = parser.parse_args()
 
+    global LANGUAGE
+    LANGUAGE = detect_language(args.content_name)
+    log(f"Phát hiện ngôn ngữ: {LANGUAGE}")
+
     audio_path = os.path.join(AUDIO_DIR, f"{args.content_name}_output_audio.wav")
     output_srt = os.path.join(OUTPUT_DIR, f"{args.content_name}_subtitles.srt")
     output_json = os.path.join(OUTPUT_DIR, f"{args.content_name}_segments.json")
@@ -162,7 +171,7 @@ def main():
     segments_data = []
     with tempfile.TemporaryDirectory() as temp_dir:
         for i, seg in enumerate(segments_to_recognize, 1):
-            res = recognize_audio_segment(seg["audio_chunk"], temp_dir, i)
+            res = recognize_audio_segment(seg["audio_chunk"], temp_dir, i, LANGUAGE)
             if res["text"].strip():
                 segments_data.append({
                     "start_ms": seg["display_start"], "end_ms": seg["display_end"], 
