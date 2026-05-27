@@ -34,6 +34,8 @@ B3-Create-SRT/export/
 B4-Verify-SRT/export/
 B5-Create-Video/export/*
 !B5-Create-Video/export/.gitkeep
+B5-Create-Video/Library/*
+!B5-Create-Video/Library/.gitkeep
 
 # Temporary files
 **/tmp_ass/
